@@ -1,3 +1,21 @@
+# InvenCore — Inventory Management System
+
+<div align="center">
+
+![Java](https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2.5-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
+![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-Security-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
+![Tailwind](https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+
+**Sistema de gestión de inventario empresarial full-stack con arquitectura en capas,
+autenticación JWT y dos interfaces diferenciadas por rol.**
+
+[📋 Funcionalidades](#-funcionalidades) • [🏗️ Arquitectura](#-arquitectura) • [🛠️ Instalación](#-instalación-local) • [📡 API](#-api-endpoints-principales)
+
+</div>
+
 ---
 
 ## 🛠️ Stack Tecnológico
@@ -28,40 +46,35 @@
 - Git
 
 ### 1. Clonar el repositorio
-```bash
-git clone https://github.com/LuisAIDev/-InvenCore.git
-cd InvenCore
-```
+
+    git clone https://github.com/LuisAIDev/-InvenCore.git
+    cd InvenCore
 
 ### 2. Configurar la base de datos
-```sql
-CREATE DATABASE invencore_db;
-```
+
+    CREATE DATABASE invencore_db;
 
 ### 3. Configurar variables de entorno
 Crea `backend/src/main/resources/application.properties`:
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/invencore_db
-spring.datasource.username=TU_USUARIO
-spring.datasource.password=TU_PASSWORD
-jwt.secret=TU_JWT_SECRET_KEY
-jwt.expiration=86400000
-```
+
+    spring.datasource.url=jdbc:postgresql://localhost:5432/invencore_db
+    spring.datasource.username=TU_USUARIO
+    spring.datasource.password=TU_PASSWORD
+    jwt.secret=TU_JWT_SECRET_KEY
+    jwt.expiration=86400000
 
 ### 4. Ejecutar el backend
-```bash
-cd backend
-mvn spring-boot:run
-# Servidor en http://localhost:8080
-```
+
+    cd backend
+    mvn spring-boot:run
+    # Servidor en http://localhost:8080
 
 ### 5. Ejecutar el frontend
-```bash
-cd frontend
-npm install
-npm run dev
-# Aplicación en http://localhost:5173
-```
+
+    cd frontend
+    npm install
+    npm run dev
+    # Aplicación en http://localhost:5173
 
 ---
 
