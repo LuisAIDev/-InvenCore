@@ -15,7 +15,6 @@
 | Estilos | Tailwind CSS | 3.4 |
 | HTTP Client | Axios | Latest |
 | Enrutamiento | React Router DOM | 6.x |
-| Control de versiones | Git + GitHub | — |
 
 ---
 
@@ -39,8 +38,8 @@ cd InvenCore
 CREATE DATABASE invencore_db;
 ```
 
-### 3. Configurar variables de entorno del backend
-Crea el archivo `backend/src/main/resources/application.properties`:
+### 3. Configurar variables de entorno
+Crea `backend/src/main/resources/application.properties`:
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/invencore_db
 spring.datasource.username=TU_USUARIO
@@ -53,31 +52,31 @@ jwt.expiration=86400000
 ```bash
 cd backend
 mvn spring-boot:run
+# Servidor en http://localhost:8080
 ```
-El servidor arranca en `http://localhost:8080`
 
 ### 5. Ejecutar el frontend
 ```bash
 cd frontend
 npm install
 npm run dev
+# Aplicación en http://localhost:5173
 ```
-La aplicación abre en `http://localhost:5173`
 
 ---
 
 ## 🔐 Acceso de demostración
 
 > ⚠️ **Solo para evaluación del proyecto.**
-> En producción, las credenciales se gestionan mediante variables de entorno seguras.
+> Las credenciales reales se comparten directamente con evaluadores y recruiters.
+> En producción se gestionan mediante variables de entorno seguras.
 
 | Rol | Email | Contraseña |
 |-----|-------|-----------|
-| Administrador | admin@invencore.com | Ver `.env.example` |
-| Operador | operador@invencore.com | Ver `.env.example` |
+| Administrador | admin@invencore.com | Contactar al autor |
+| Operador | operador@invencore.com | Contactar al autor |
 
-> 💡 ¿Quieres acceder? Contáctame directamente por LinkedIn o GitHub
-> y te comparto las credenciales de la demo en vivo.
+> 💡 Escríbeme por LinkedIn o GitHub para acceder a la demo en vivo.
 
 ---
 
@@ -114,13 +113,27 @@ La aplicación abre en `http://localhost:5173`
 ## 👨‍💻 Autor
 
 **Luis Orlando Guerra González**
-Desarrollador Full-Stack en formación | SENA Cartagena, Colombia
+Desarrollador Full-Stack | Cartagena, Colombia
 
-[![GitHub](https://img.shields.io/badge/GitHub-LuisAIDev-181717?style=flat&logo=github)](https://github.com/LuisAIDev)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Luis_Orlando-0077B5?style=flat&logo=linkedin)](https://linkedin.com/in/luis-orlando-guerra-gonzalez-49aa30244)
+Especializado en desarrollo de aplicaciones empresariales con Java Spring Boot y React.
+Apasionado por la arquitectura limpia, la seguridad de aplicaciones y la mejora continua.
+
+[![GitHub](https://img.shields.io/badge/GitHub-LuisAIDev-181717?style=flat&logo=github&logoColor=white)](https://github.com/LuisAIDev)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Luis_Orlando_Guerra-0077B5?style=flat&logo=linkedin&logoColor=white)](https://linkedin.com/in/luis-orlando-guerra-gonzalez-49aa30244)
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Libre para usar como referencia o aprendizaje.
 
 ---
 
 <div align="center">
-⭐ Si este proyecto te parece útil, considera darle una estrella en GitHub
+
+**¿Te parece útil este proyecto?**
+⭐ Dale una estrella en GitHub — significa mucho para un desarrollador independiente
+
+*Construido con dedicación por Luis Orlando Guerra González — Cartagena, Colombia 🇨🇴*
+
 </div>
