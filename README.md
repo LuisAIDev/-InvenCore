@@ -1,63 +1,126 @@
-# InvenCore — Inventory Management System
+---
 
-![Java](https://img.shields.io/badge/Java-17-orange)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.5-green)
-![React](https://img.shields.io/badge/React-18-blue)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-blue)
+## 🛠️ Stack Tecnológico
 
-Sistema de gestión de inventario empresarial full-stack con roles de usuario.
+| Capa | Tecnología | Versión |
+|------|-----------|---------|
+| Lenguaje Backend | Java | 17 LTS |
+| Framework Backend | Spring Boot | 3.2.5 |
+| Seguridad | Spring Security + JWT | JJWT 0.11.5 |
+| ORM | Hibernate / JPA | 6.4.4 |
+| Base de datos | PostgreSQL | 17 |
+| Lenguaje Frontend | JavaScript | ES2023 |
+| Framework Frontend | React | 18 |
+| Build Tool | Vite | 8.x |
+| Estilos | Tailwind CSS | 3.4 |
+| HTTP Client | Axios | Latest |
+| Enrutamiento | React Router DOM | 6.x |
+| Control de versiones | Git + GitHub | — |
 
-## Características principales
-- Autenticación JWT con roles (ADMIN / OPERADOR)
-- CRUD completo de productos y categorías
-- Control de entradas y salidas de stock en tiempo real
-- Alertas automáticas de stock mínimo
-- Dashboard ejecutivo con métricas
-- Interfaz del operador con diseño dark mode
-- Registro público de usuarios
+---
 
-## Stack tecnológico
-| Capa | Tecnología |
-|------|-----------|
-| Backend | Java 17 + Spring Boot 3.2.5 |
-| Seguridad | Spring Security + JWT |
-| Base de datos | PostgreSQL 17 + JPA/Hibernate |
-| Frontend | React 18 + Vite + Tailwind CSS |
-| Control de versiones | Git + GitHub |
+## 🚀 Instalación local
 
-## Instalación local
-
-### Requisitos
+### Requisitos previos
 - Java 17+
 - Maven 3.9+
 - PostgreSQL 17
 - Node.js 18+
+- Git
 
-### Backend
+### 1. Clonar el repositorio
+```bash
+git clone https://github.com/LuisAIDev/-InvenCore.git
+cd InvenCore
+```
+
+### 2. Configurar la base de datos
+```sql
+CREATE DATABASE invencore_db;
+```
+
+### 3. Configurar variables de entorno del backend
+Crea el archivo `backend/src/main/resources/application.properties`:
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/invencore_db
+spring.datasource.username=TU_USUARIO
+spring.datasource.password=TU_PASSWORD
+jwt.secret=TU_JWT_SECRET_KEY
+jwt.expiration=86400000
+```
+
+### 4. Ejecutar el backend
+```bash
 cd backend
 mvn spring-boot:run
+```
+El servidor arranca en `http://localhost:8080`
 
-### Frontend
+### 5. Ejecutar el frontend
+```bash
 cd frontend
 npm install
 npm run dev
+```
+La aplicación abre en `http://localhost:5173`
 
-## Credenciales de demostración
-> ⚠️ Este proyecto es de demostración. Las credenciales de prueba 
-> están disponibles para evaluadores y recruiters.
+---
 
-| Rol | Email | Password |
-|-----|-------|----------|
-| Admin | admin@invencore.com | REDACTED |
-| Operador | operador@invencore.com | operador123 |
+## 🔐 Acceso de demostración
 
-> 💡 En producción las credenciales se configuran mediante 
-> variables de entorno. Nunca se exponen en el código fuente.
+> ⚠️ **Solo para evaluación del proyecto.**
+> En producción, las credenciales se gestionan mediante variables de entorno seguras.
 
-## Variables de entorno (Producción)
-Crea un archivo `backend/src/main/resources/application-prod.properties`:
+| Rol | Email | Contraseña |
+|-----|-------|-----------|
+| Administrador | admin@invencore.com | Ver `.env.example` |
+| Operador | operador@invencore.com | Ver `.env.example` |
 
-## Autor
+> 💡 ¿Quieres acceder? Contáctame directamente por LinkedIn o GitHub
+> y te comparto las credenciales de la demo en vivo.
+
+---
+
+## 📡 API Endpoints principales
+
+| Método | Endpoint | Descripción | Auth |
+|--------|----------|-------------|------|
+| POST | `/api/auth/login` | Iniciar sesión | Público |
+| POST | `/api/auth/registro` | Crear cuenta | Público |
+| GET | `/api/productos` | Listar productos | JWT |
+| POST | `/api/productos` | Crear producto | ADMIN |
+| PUT | `/api/productos/{id}` | Editar producto | ADMIN |
+| DELETE | `/api/productos/{id}` | Eliminar producto | ADMIN |
+| GET | `/api/categorias` | Listar categorías | JWT |
+| GET | `/api/movimientos` | Historial de stock | JWT |
+| POST | `/api/movimientos` | Registrar movimiento | JWT |
+
+---
+
+## 🗺️ Roadmap
+
+- [x] v1.0 — CRUD completo + JWT + Roles
+- [x] v1.0 — Dashboard Admin + Panel Operador dark mode
+- [x] v1.0 — Registro público de usuarios
+- [ ] v1.1 — Reportes PDF exportables
+- [ ] v1.1 — Gráficas de movimientos por período
+- [ ] v1.2 — Dockerización completa
+- [ ] v2.0 — Despliegue en Railway + Vercel
+- [ ] v2.0 — CI/CD con GitHub Actions
+- [ ] v2.1 — Tests unitarios con JUnit 5
+
+---
+
+## 👨‍💻 Autor
+
 **Luis Orlando Guerra González**
-- GitHub: [@LuisAIDev](https://github.com/LuisAIDev)
-- LinkedIn: [luis-orlando-guerra-gonzalez](https://linkedin.com/in/luis-orlando-guerra-gonzalez-49aa30244)
+Desarrollador Full-Stack en formación | SENA Cartagena, Colombia
+
+[![GitHub](https://img.shields.io/badge/GitHub-LuisAIDev-181717?style=flat&logo=github)](https://github.com/LuisAIDev)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Luis_Orlando-0077B5?style=flat&logo=linkedin)](https://linkedin.com/in/luis-orlando-guerra-gonzalez-49aa30244)
+
+---
+
+<div align="center">
+⭐ Si este proyecto te parece útil, considera darle una estrella en GitHub
+</div>
