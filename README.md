@@ -42,11 +42,20 @@ cd frontend
 npm install
 npm run dev
 
-## Credenciales de prueba
+## Credenciales de demostración
+> ⚠️ Este proyecto es de demostración. Las credenciales de prueba 
+> están disponibles para evaluadores y recruiters.
+
 | Rol | Email | Password |
 |-----|-------|----------|
 | Admin | admin@invencore.com | REDACTED |
 | Operador | operador@invencore.com | operador123 |
+
+> 💡 En producción las credenciales se configuran mediante 
+> variables de entorno. Nunca se exponen en el código fuente.
+
+## Variables de entorno (Producción)
+Crea un archivo `backend/src/main/resources/application-prod.properties`:
 
 ## Autor
 **Luis Orlando Guerra González**
