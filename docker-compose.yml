@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: invencore-db
+    environment:
+      POSTGRES_DB: invencore_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: REDACTED
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - invencore-network
+
+  backend:
+    build: ./backend
+    container_name: invencore-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/invencore_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: REDACTED
+      JWT_SECRET: REDACTED
+      JWT_EXPIRATION: 86400000
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - invencore-network
+
+  frontend:
+    build: ./frontend
+    container_name: invencore-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - invencore-network
+
+volumes:
+  postgres_data:
+
+networks:
+  invencore-network:
+    driver: bridge
