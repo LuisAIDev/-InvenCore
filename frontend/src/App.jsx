@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Productos from './pages/Productos';
 import Categorias from './pages/Categorias';
@@ -30,6 +31,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/" element={<ProtectedPage Page={Dashboard} roles={['ADMIN']} />} />
         <Route path="/productos" element={<ProtectedPage Page={Productos} roles={['ADMIN']} />} />
         <Route path="/categorias" element={<ProtectedPage Page={Categorias} roles={['ADMIN']} />} />

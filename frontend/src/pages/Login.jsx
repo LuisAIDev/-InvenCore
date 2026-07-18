@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../services/api';
 
 export default function Login() {
@@ -81,7 +81,14 @@ export default function Login() {
           </button>
         </form>
 
-        <p className="text-center text-xs text-gray-400 mt-8">
+        <p className="text-center text-sm text-gray-500 mt-6">
+          ¿No tienes cuenta?{' '}
+          <Link to="/register" className="text-blue-600 hover:text-blue-800 font-medium">
+            Crear cuenta
+          </Link>
+        </p>
+
+        <p className="text-center text-xs text-gray-400 mt-4">
           InvenCore v1.0 — Sistema de Inventario Empresarial
         </p>
       </div>
