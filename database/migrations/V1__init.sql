@@ -1,4 +1,4 @@
--- Usuario administrador inicial (password: REDACTED)
+-- Usuario administrador inicial
 INSERT INTO usuarios (nombre, email, password, rol, activo)
 VALUES (
   'Administrador',

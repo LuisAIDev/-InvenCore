@@ -20,3 +20,6 @@ Thumbs.db
 
 # Credenciales (IMPORTANTE - nunca subir)
 application-prod.properties
+
+# Entorno local Docker
+.env
