@@ -1,5 +1,8 @@
 # InvenCore — Inventory Management System
 
+[![Backend CI](https://github.com/LuisAIDev/-InvenCore/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/LuisAIDev/-InvenCore/actions/workflows/backend-ci.yml)
+[![Frontend CI](https://github.com/LuisAIDev/-InvenCore/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/LuisAIDev/-InvenCore/actions/workflows/frontend-ci.yml)
+
 <div align="center">
 
 ![Java](https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
