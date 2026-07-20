@@ -161,7 +161,7 @@ export default function Dashboard() {
           <div className="space-y-3">
             {[
               { label: 'Versión', value: '1.0.0' },
-              { label: 'Entorno', value: 'Desarrollo' },
+              { label: 'Entorno', value: import.meta.env.VITE_ENV || (import.meta.env.MODE === 'production' ? 'Producción' : 'Desarrollo') },
               { label: 'Base de Datos', value: 'PostgreSQL 17' },
               { label: 'API Status', value: 'Online' },
             ].map((info) => (
