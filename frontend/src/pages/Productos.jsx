@@ -21,13 +21,9 @@ export default function Productos() {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    fetch('http://localhost:8080/api/categorias', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-    .then(r => r.json())
-    .then(data => setCategorias(data))
-    .catch(() => {});
+    API.get('/categorias')
+      .then(res => setCategorias(res.data))
+      .catch(() => {});
   }, []);
 
   const fetchProductos = async () => {
