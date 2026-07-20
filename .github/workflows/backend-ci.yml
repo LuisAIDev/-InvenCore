@@ -31,4 +31,4 @@ jobs:
         run: mvn clean compile --batch-mode
 
       - name: Test
-        run: mvn test --batch-mode -DfailIfNoTests=false
+        run: mvn test --batch-mode
