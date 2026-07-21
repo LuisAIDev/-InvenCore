@@ -9,9 +9,12 @@ import com.invencore.app.repository.UsuarioRepository;
 import com.invencore.app.security.JwtUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +27,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthController {
 
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
+
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
     private final UsuarioRepository usuarioRepository;
@@ -31,12 +36,18 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponseDTO> login(@Valid @RequestBody AuthDTO dto) {
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
-        Usuario usuario = (Usuario) auth.getPrincipal();
-        String token = jwtUtils.generateToken(usuario.getEmail());
-        return ResponseEntity.ok(new JwtResponseDTO(
-                token, "Bearer", usuario.getEmail(), usuario.getRol().name()));
+        try {
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
+            Usuario usuario = (Usuario) auth.getPrincipal();
+            String token = jwtUtils.generateToken(usuario.getEmail());
+            log.info("Login exitoso: email={}, rol={}", usuario.getEmail(), usuario.getRol());
+            return ResponseEntity.ok(new JwtResponseDTO(
+                    token, "Bearer", usuario.getEmail(), usuario.getRol().name()));
+        } catch (BadCredentialsException e) {
+            log.warn("Login fallido: credenciales inválidas para email={}", dto.getEmail());
+            throw e;
+        }
     }
 
     @PostMapping("/registro")

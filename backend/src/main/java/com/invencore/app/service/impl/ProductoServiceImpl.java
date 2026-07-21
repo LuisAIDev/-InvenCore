@@ -8,6 +8,8 @@ import com.invencore.app.repository.CategoriaRepository;
 import com.invencore.app.repository.ProductoRepository;
 import com.invencore.app.service.ProductoService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class ProductoServiceImpl implements ProductoService {
+
+    private static final Logger log = LoggerFactory.getLogger(ProductoServiceImpl.class);
 
     private final ProductoRepository productoRepository;
     private final CategoriaRepository categoriaRepository;
@@ -60,7 +64,9 @@ public class ProductoServiceImpl implements ProductoService {
                 .activo(true)
                 .categoria(categoria)
                 .build();
-        return toDTO(productoRepository.save(producto));
+        ProductoDTO saved = toDTO(productoRepository.save(producto));
+        log.info("Producto creado: id={}, nombre='{}', categoriaId={}", saved.getId(), saved.getNombre(), dto.getCategoriaId());
+        return saved;
     }
 
     @Override
@@ -75,7 +81,9 @@ public class ProductoServiceImpl implements ProductoService {
         producto.setStockMinimo(dto.getStockMinimo());
         producto.setActivo(dto.getActivo());
         producto.setCategoria(categoria);
-        return toDTO(productoRepository.save(producto));
+        ProductoDTO updated = toDTO(productoRepository.save(producto));
+        log.info("Producto actualizado: id={}, nombre='{}'", id, updated.getNombre());
+        return updated;
     }
 
     @Override

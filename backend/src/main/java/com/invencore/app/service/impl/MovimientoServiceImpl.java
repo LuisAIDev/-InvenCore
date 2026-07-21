@@ -11,6 +11,8 @@ import com.invencore.app.repository.ProductoRepository;
 import com.invencore.app.repository.UsuarioRepository;
 import com.invencore.app.service.MovimientoService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class MovimientoServiceImpl implements MovimientoService {
+
+    private static final Logger log = LoggerFactory.getLogger(MovimientoServiceImpl.class);
 
     private final MovimientoRepository movimientoRepository;
     private final ProductoRepository productoRepository;
@@ -60,6 +64,8 @@ public class MovimientoServiceImpl implements MovimientoService {
 
         if (dto.getTipo() == TipoMovimiento.SALIDA) {
             if (producto.getStock() < dto.getCantidad()) {
+                log.warn("Stock insuficiente para salida: productoId={}, stockActual={}, cantidadSolicitada={}",
+                        dto.getProductoId(), producto.getStock(), dto.getCantidad());
                 throw new RuntimeException("Stock insuficiente. Stock actual: " + producto.getStock());
             }
             producto.setStock(producto.getStock() - dto.getCantidad());
@@ -75,7 +81,10 @@ public class MovimientoServiceImpl implements MovimientoService {
                 .usuario(usuario)
                 .build();
 
-        return toDTO(movimientoRepository.save(movimiento));
+        MovimientoDTO saved = toDTO(movimientoRepository.save(movimiento));
+        log.info("Movimiento registrado: id={}, tipo={}, cantidad={}, productoId={}, usuarioId={}",
+                saved.getId(), dto.getTipo(), dto.getCantidad(), dto.getProductoId(), usuarioId);
+        return saved;
     }
 
     private MovimientoDTO toDTO(Movimiento m) {
