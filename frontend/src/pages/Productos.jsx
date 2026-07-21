@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import API from '../services/api';
+import ProductThumb from '../components/common/ProductThumb';
 
 export default function Productos() {
   const [productos, setProductos] = useState([]);
@@ -17,6 +18,7 @@ export default function Productos() {
     precio: '',
     stock: '',
     stockMinimo: '',
+    imagenUrl: '',
   });
 
   useEffect(() => {
@@ -68,7 +70,7 @@ export default function Productos() {
         <button
           onClick={() => {
             setEditing(null);
-            setForm({ nombre: '', categoriaId: '', precio: '', stock: '', stockMinimo: '' });
+            setForm({ nombre: '', categoriaId: '', precio: '', stock: '', stockMinimo: '', imagenUrl: '' });
             setShowModal(true);
           }}
           className="btn-primary flex items-center gap-2 self-start sm:self-auto"
@@ -100,7 +102,7 @@ export default function Productos() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">ID</th>
+                <th className="text-left px-4 py-3 font-semibold text-gray-600 w-12">Img</th>
                 <th className="text-left px-4 py-3 font-semibold text-gray-600">Nombre</th>
                 <th className="text-left px-4 py-3 font-semibold text-gray-600">Categoría</th>
                 <th className="text-left px-4 py-3 font-semibold text-gray-600">Precio</th>
@@ -136,6 +138,9 @@ export default function Productos() {
                   return (
                     <tr key={p.id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-4 py-3 font-mono text-xs text-gray-500">#{p.id}</td>
+                      <td className="px-4 py-3">
+                        <ProductThumb url={p.imagenUrl} />
+                      </td>
                       <td className="px-4 py-3 font-medium text-gray-800">{p.nombre}</td>
                       <td className="px-4 py-3 text-gray-600">{p.categoriaNombre || 'Sin categoría'}</td>
                       <td className="px-4 py-3 text-gray-600">${parseFloat(p.precio).toFixed(2)}</td>
@@ -169,6 +174,7 @@ export default function Productos() {
                                 precio: p.precio.toString(),
                                 stock: p.stock.toString(),
                                 stockMinimo: p.stockMinimo.toString(),
+                                imagenUrl: p.imagenUrl || '',
                               });
                               setShowModal(true);
                             }}
@@ -233,6 +239,7 @@ export default function Productos() {
                             precio: p.precio.toString(),
                             stock: p.stock.toString(),
                             stockMinimo: p.stockMinimo.toString(),
+                            imagenUrl: p.imagenUrl || '',
                           });
                           setShowModal(true);
                         }}
@@ -319,6 +326,7 @@ export default function Productos() {
                   precio: parseFloat(form.precio),
                   stock: parseInt(form.stock),
                   stockMinimo: parseInt(form.stockMinimo),
+                  imagenUrl: form.imagenUrl || null,
                 };
                 if (editing) {
                   await API.put(`/productos/${editing.id}`, payload);
@@ -389,8 +397,19 @@ export default function Productos() {
                     />
                   </div>
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">URL de Imagen</label>
+                  <input
+                    type="url"
+                    value={form.imagenUrl}
+                    onChange={(e) => setForm({ ...form, imagenUrl: e.target.value })}
+                    className="input-field"
+                    placeholder="https://i.imgur.com/ejemplo.jpg"
+                  />
+                  <p className="text-xs text-gray-400 mt-1">Usa un servicio gratuito como imgur.com, postimages.org o una URL de stock. Déjalo vacío para usar el ícono por defecto.</p>
+                </div>
               </div>
-              <div className="flex justify-end gap-3 mt-8">
+              <div className="flex justify-end gap-3 mt-6">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}

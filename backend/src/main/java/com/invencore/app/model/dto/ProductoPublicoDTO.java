@@ -10,6 +10,7 @@ public class ProductoPublicoDTO {
     private String nombre;
     private String descripcion;
     private BigDecimal precio;
+    private String imagenUrl;
     private Long categoriaId;
     private String categoriaNombre;
     private boolean disponible;

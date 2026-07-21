@@ -77,6 +77,7 @@ public class ProductoServiceImpl implements ProductoService {
                 .precio(dto.getPrecio())
                 .stock(dto.getStock() != null ? dto.getStock() : 0)
                 .stockMinimo(dto.getStockMinimo() != null ? dto.getStockMinimo() : 5)
+                .imagenUrl(dto.getImagenUrl())
                 .activo(true)
                 .categoria(categoria)
                 .build();
@@ -93,6 +94,7 @@ public class ProductoServiceImpl implements ProductoService {
                 .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada"));
         producto.setNombre(dto.getNombre());
         producto.setDescripcion(dto.getDescripcion());
+        producto.setImagenUrl(dto.getImagenUrl());
         producto.setPrecio(dto.getPrecio());
         producto.setStockMinimo(dto.getStockMinimo());
         producto.setActivo(dto.getActivo());
@@ -115,6 +117,7 @@ public class ProductoServiceImpl implements ProductoService {
         dto.setId(p.getId());
         dto.setNombre(p.getNombre());
         dto.setDescripcion(p.getDescripcion());
+        dto.setImagenUrl(p.getImagenUrl());
         dto.setPrecio(p.getPrecio());
         dto.setDisponible(p.getStock() > 0);
         if (p.getCategoria() != null) {
@@ -145,6 +148,7 @@ public class ProductoServiceImpl implements ProductoService {
         dto.setId(p.getId());
         dto.setNombre(p.getNombre());
         dto.setDescripcion(p.getDescripcion());
+        dto.setImagenUrl(p.getImagenUrl());
         dto.setPrecio(p.getPrecio());
         dto.setStock(p.getStock());
         dto.setStockMinimo(p.getStockMinimo());

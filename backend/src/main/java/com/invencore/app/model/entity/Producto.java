@@ -54,6 +54,8 @@ public class Producto {
     @UpdateTimestamp
     private LocalDateTime fechaActualizacion;
 
+    private String imagenUrl;
+
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;

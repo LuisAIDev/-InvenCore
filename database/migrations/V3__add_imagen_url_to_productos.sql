@@ -1,0 +1,6 @@
+-- Add imagen_url column to productos table
+-- Hibernate will auto-add this column in dev (ddl-auto=update).
+-- For production (ddl-auto=validate), run manually:
+--
+--   ALTER TABLE productos ADD COLUMN IF NOT EXISTS imagen_url VARCHAR(500);
+--

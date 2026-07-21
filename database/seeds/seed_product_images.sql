@@ -1,0 +1,14 @@
+-- Seed: assign picsum.photos URLs to existing products
+-- Each product gets a deterministic image based on its ID.
+-- picsum.photos/seed/{seed}/{w}/{h} returns the same image for the same seed.
+--
+-- Run this AFTER the column exists:
+--   ALTER TABLE productos ADD COLUMN IF NOT EXISTS imagen_url VARCHAR(500);
+--
+-- Then execute:
+--   UPDATE productos
+--   SET imagen_url = 'https://picsum.photos/seed/producto_' || id || '/400/300'
+--   WHERE imagen_url IS NULL;
+
+-- This script uses a fixed seed per product so images are consistent.
+-- To preview the image for product 1: https://picsum.photos/seed/producto_1/400/300
