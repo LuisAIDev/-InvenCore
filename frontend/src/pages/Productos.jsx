@@ -19,6 +19,7 @@ export default function Productos() {
     stock: '',
     stockMinimo: '',
     imagenUrl: '',
+    activo: true,
   });
 
   useEffect(() => {
@@ -70,7 +71,7 @@ export default function Productos() {
         <button
           onClick={() => {
             setEditing(null);
-            setForm({ nombre: '', categoriaId: '', precio: '', stock: '', stockMinimo: '', imagenUrl: '' });
+            setForm({ nombre: '', categoriaId: '', precio: '', stock: '', stockMinimo: '', imagenUrl: '', activo: true });
             setShowModal(true);
           }}
           className="btn-primary flex items-center gap-2 self-start sm:self-auto"
@@ -175,6 +176,7 @@ export default function Productos() {
                                 stock: p.stock.toString(),
                                 stockMinimo: p.stockMinimo.toString(),
                                 imagenUrl: p.imagenUrl || '',
+                                activo: p.activo ?? true,
                               });
                               setShowModal(true);
                             }}
@@ -240,6 +242,7 @@ export default function Productos() {
                             stock: p.stock.toString(),
                             stockMinimo: p.stockMinimo.toString(),
                             imagenUrl: p.imagenUrl || '',
+                            activo: p.activo ?? true,
                           });
                           setShowModal(true);
                         }}
