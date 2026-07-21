@@ -5,6 +5,7 @@ import com.invencore.app.model.dto.ProductoDTO;
 import com.invencore.app.model.entity.Categoria;
 import com.invencore.app.model.entity.Producto;
 import com.invencore.app.repository.CategoriaRepository;
+import com.invencore.app.repository.OfertaRepository;
 import com.invencore.app.repository.ProductoRepository;
 import com.invencore.app.service.impl.ProductoServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,6 +37,9 @@ class ProductoServiceTest {
     @Mock
     private CategoriaRepository categoriaRepository;
 
+    @Mock
+    private OfertaRepository ofertaRepository;
+
     @Captor
     private ArgumentCaptor<Producto> productoCaptor;
 
@@ -43,7 +47,7 @@ class ProductoServiceTest {
 
     @BeforeEach
     void setUp() {
-        productoService = new ProductoServiceImpl(productoRepository, categoriaRepository);
+        productoService = new ProductoServiceImpl(productoRepository, categoriaRepository, ofertaRepository);
     }
 
     @Test

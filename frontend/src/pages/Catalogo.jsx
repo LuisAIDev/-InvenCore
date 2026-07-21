@@ -3,12 +3,18 @@ import { Link } from 'react-router-dom';
 import { publicoService } from '../services/api';
 
 function ProductCard({ producto }) {
+  const tieneOferta = producto.precioOriginal != null;
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-200 flex flex-col">
-      <div className="h-48 bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
-        <svg className="w-16 h-16 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+      <div className={`h-48 ${tieneOferta ? 'bg-gradient-to-br from-red-100 to-red-200' : 'bg-gradient-to-br from-primary-100 to-primary-200'} flex items-center justify-center relative`}>
+        <svg className="w-16 h-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
         </svg>
+        {tieneOferta && (
+          <span className="absolute top-3 right-3 bg-danger text-white text-xs font-bold px-2.5 py-1 rounded-full">
+            -{producto.porcentajeDescuento}% OFERTA
+          </span>
+        )}
       </div>
       <div className="p-5 flex flex-col flex-1">
         <div className="flex items-center justify-between mb-2">
@@ -26,10 +32,23 @@ function ProductCard({ producto }) {
         {producto.descripcion && (
           <p className="text-sm text-gray-500 mb-3 line-clamp-2 flex-1">{producto.descripcion}</p>
         )}
-        <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-100">
-          <span className="text-2xl font-bold text-gray-900">
-            ${producto.precio?.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
-          </span>
+        <div className="flex items-end justify-between mt-auto pt-3 border-t border-gray-100">
+          <div>
+            {tieneOferta ? (
+              <div className="flex flex-col">
+                <span className="text-sm line-through text-gray-400">
+                  ${producto.precioOriginal?.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
+                </span>
+                <span className="text-2xl font-bold text-danger">
+                  ${producto.precioConDescuento?.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
+                </span>
+              </div>
+            ) : (
+              <span className="text-2xl font-bold text-gray-900">
+                ${producto.precio?.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>

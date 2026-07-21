@@ -54,4 +54,12 @@ export const publicoService = {
   listarCategorias: () => api.get('/publico/categorias'),
 };
 
+export const ofertaService = {
+  listarTodos: () => api.get('/ofertas'),
+  buscarPorId: (id) => api.get(`/ofertas/${id}`),
+  crear: (data) => api.post('/ofertas', data),
+  actualizar: (id, data) => api.put(`/ofertas/${id}`, data),
+  eliminar: (id) => api.delete(`/ofertas/${id}`),
+};
+
 export default api;

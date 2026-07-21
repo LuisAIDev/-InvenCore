@@ -4,8 +4,10 @@ import com.invencore.app.exception.ResourceNotFoundException;
 import com.invencore.app.model.dto.ProductoDTO;
 import com.invencore.app.model.dto.ProductoPublicoDTO;
 import com.invencore.app.model.entity.Categoria;
+import com.invencore.app.model.entity.Oferta;
 import com.invencore.app.model.entity.Producto;
 import com.invencore.app.repository.CategoriaRepository;
+import com.invencore.app.repository.OfertaRepository;
 import com.invencore.app.repository.ProductoRepository;
 import com.invencore.app.service.ProductoService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +32,7 @@ public class ProductoServiceImpl implements ProductoService {
 
     private final ProductoRepository productoRepository;
     private final CategoriaRepository categoriaRepository;
+    private final OfertaRepository ofertaRepository;
 
     @Override
     public Page<ProductoDTO> listarTodos(Pageable pageable) {
@@ -113,6 +121,22 @@ public class ProductoServiceImpl implements ProductoService {
             dto.setCategoriaId(p.getCategoria().getId());
             dto.setCategoriaNombre(p.getCategoria().getNombre());
         }
+
+        List<Oferta> ofertasActivas = ofertaRepository.findActiveOffersForProduct(p.getId(), LocalDateTime.now());
+        if (!ofertasActivas.isEmpty()) {
+            Oferta mejorOferta = ofertasActivas.stream()
+                    .max(java.util.Comparator.comparing(Oferta::getPorcentajeDescuento))
+                    .orElse(ofertasActivas.get(0));
+            BigDecimal descuento = mejorOferta.getPorcentajeDescuento();
+            BigDecimal precioConDescuento = p.getPrecio()
+                    .multiply(BigDecimal.ONE.subtract(descuento.divide(BigDecimal.valueOf(100), 2, java.math.RoundingMode.HALF_UP)))
+                    .setScale(2, java.math.RoundingMode.HALF_UP);
+            dto.setPrecioOriginal(p.getPrecio());
+            dto.setPrecioConDescuento(precioConDescuento);
+            dto.setPorcentajeDescuento(descuento);
+            dto.setOfertaNombre(mejorOferta.getNombre());
+        }
+
         return dto;
     }
 

@@ -7,6 +7,7 @@ import Productos from './pages/Productos';
 import Categorias from './pages/Categorias';
 import Movimientos from './pages/Movimientos';
 import Usuarios from './pages/Usuarios';
+import Ofertas from './pages/Ofertas';
 import Layout from './components/layout/Layout';
 import OperadorDashboard from './pages/OperadorDashboard';
 import RegistrarMovimiento from './pages/RegistrarMovimiento';
@@ -39,6 +40,7 @@ function App() {
         <Route path="/categorias" element={<ProtectedPage Page={Categorias} roles={['ADMIN']} />} />
         <Route path="/movimientos" element={<ProtectedPage Page={Movimientos} roles={['ADMIN']} />} />
         <Route path="/usuarios" element={<ProtectedPage Page={Usuarios} roles={['ADMIN']} />} />
+        <Route path="/ofertas" element={<ProtectedPage Page={Ofertas} roles={['ADMIN']} />} />
         <Route path="/operador" element={
           <PrivateRoute roles={['OPERADOR', 'ADMIN']}>
             <OperadorDashboard />

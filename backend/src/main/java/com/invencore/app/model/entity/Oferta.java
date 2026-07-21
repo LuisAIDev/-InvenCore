@@ -7,20 +7,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "productos")
+@Table(name = "ofertas")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Producto {
+public class Oferta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,33 +29,27 @@ public class Producto {
     @Column(nullable = false)
     private String nombre;
 
-    private String descripcion;
+    @NotNull
+    @Column(nullable = false, precision = 5, scale = 2)
+    private BigDecimal porcentajeDescuento;
 
     @NotNull
     @Column(nullable = false)
-    private BigDecimal precio;
+    private LocalDateTime fechaInicio;
 
     @NotNull
-    @Builder.Default
-    private Integer stock = 0;
+    @Column(nullable = false)
+    private LocalDateTime fechaFin;
 
     @Builder.Default
-    private Integer stockMinimo = 5;
+    private Boolean activa = true;
 
+    @ManyToMany
+    @JoinTable(
+            name = "ofertas_productos",
+            joinColumns = @JoinColumn(name = "oferta_id"),
+            inverseJoinColumns = @JoinColumn(name = "producto_id")
+    )
     @Builder.Default
-    private Boolean activo = true;
-
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime fechaCreacion;
-
-    @UpdateTimestamp
-    private LocalDateTime fechaActualizacion;
-
-    @ManyToOne
-    @JoinColumn(name = "categoria_id")
-    private Categoria categoria;
-
-    @ManyToMany(mappedBy = "productos")
-    private Set<Oferta> ofertas;
+    private Set<Producto> productos = new HashSet<>();
 }
