@@ -28,15 +28,15 @@ export default function Movimientos() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-6 sm:mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Movimientos</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Movimientos</h1>
           <p className="text-sm text-gray-500 mt-1">Historial de entradas y salidas del inventario</p>
         </div>
       </div>
 
       <div className="card overflow-hidden !p-0">
-        <div className="overflow-x-auto">
+        <div className="hidden sm:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
@@ -71,6 +71,34 @@ export default function Movimientos() {
               )}
             </tbody>
           </table>
+        </div>
+
+        <div className="sm:hidden divide-y divide-gray-100">
+          {loading ? (
+            <div className="p-4 text-center text-gray-500">Cargando...</div>
+          ) : movimientos.length === 0 ? (
+            <div className="p-4 text-center text-gray-500">No hay movimientos registrados.</div>
+          ) : (
+            movimientos.map((m) => (
+              <div key={m.id} className="p-4 space-y-2">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-gray-900 truncate">{m.producto?.nombre || `ID ${m.productoId}`}</p>
+                    <p className="text-xs text-gray-400 font-mono">#{m.id}</p>
+                  </div>
+                  <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium flex-shrink-0 ${getTipoBadge(m.tipo)}`}>
+                    {m.tipo}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="font-semibold text-gray-800">Cantidad: {m.cantidad}</span>
+                  <span className="text-gray-500 text-xs">
+                    {m.fecha ? new Date(m.fecha).toLocaleString('es-MX') : '—'}
+                  </span>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>

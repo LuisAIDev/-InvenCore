@@ -53,9 +53,9 @@ export default function Productos() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Productos</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Productos</h1>
           <p className="text-sm text-gray-500 mt-1">
             {productos.length} producto{productos.length !== 1 ? 's' : ''} registrado{productos.length !== 1 ? 's' : ''}
           </p>
@@ -66,7 +66,7 @@ export default function Productos() {
             setForm({ nombre: '', categoriaId: '', precio: '', stock: '', stockMinimo: '' });
             setShowModal(true);
           }}
-          className="btn-primary flex items-center gap-2"
+          className="btn-primary flex items-center gap-2 self-start sm:self-auto"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -91,7 +91,7 @@ export default function Productos() {
       </div>
 
       <div className="card overflow-hidden !p-0">
-        <div className="overflow-x-auto">
+        <div className="hidden sm:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
@@ -192,11 +192,91 @@ export default function Productos() {
             </tbody>
           </table>
         </div>
+
+        <div className="sm:hidden divide-y divide-gray-100">
+          {loading ? (
+            Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="p-4 space-y-2">
+                <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4" />
+                <div className="h-3 bg-gray-200 rounded animate-pulse w-1/2" />
+              </div>
+            ))
+          ) : filtered.length === 0 ? (
+            <div className="p-8 text-center text-gray-500">
+              <svg className="w-10 h-10 mx-auto mb-2 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+              {search ? 'No se encontraron productos.' : 'No hay productos registrados.'}
+            </div>
+          ) : (
+            filtered.map((p) => {
+              const bajoStock = p.stock <= p.stockMinimo;
+              return (
+                <div key={p.id} className="p-4 space-y-2">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium text-gray-900 truncate">{p.nombre}</p>
+                      <p className="text-xs text-gray-500">{p.categoriaNombre || 'Sin categoría'}</p>
+                    </div>
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                      <button
+                        onClick={() => {
+                          setEditing(p);
+                          setForm({
+                            nombre: p.nombre,
+                            categoriaId: p.categoriaId?.toString() || '',
+                            precio: p.precio.toString(),
+                            stock: p.stock.toString(),
+                            stockMinimo: p.stockMinimo.toString(),
+                          });
+                          setShowModal(true);
+                        }}
+                        className="p-2 text-gray-400 hover:text-primary-800"
+                      >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={() => handleDelete(p.id)}
+                        className="p-2 text-gray-400 hover:text-danger"
+                      >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-600">${parseFloat(p.precio).toFixed(2)}</span>
+                    <span className={`font-semibold ${bajoStock ? 'text-danger' : 'text-gray-800'}`}>
+                      Stock: {p.stock}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-400 font-mono">#{p.id}</span>
+                    {bajoStock ? (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-danger">
+                        <span className="w-1.5 h-1.5 rounded-full bg-danger animate-pulse" />
+                        Stock Bajo
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-success">
+                        <span className="w-1.5 h-1.5 rounded-full bg-success" />
+                        Disponible
+                      </span>
+                    )}
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 mx-4">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
             <h3 className="text-lg font-semibold text-gray-900 mb-6">
               {editing ? 'Editar Producto' : 'Nuevo Producto'}
             </h3>
@@ -237,7 +317,7 @@ export default function Productos() {
                   <select
                     value={form.categoriaId || ''}
                     onChange={e => setForm({...form, categoriaId: parseInt(e.target.value)})}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                   >
                     <option value="">Selecciona una categoría</option>
@@ -246,7 +326,7 @@ export default function Productos() {
                     ))}
                   </select>
                 </div>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Precio</label>
                     <input
@@ -268,7 +348,7 @@ export default function Productos() {
                       required
                     />
                   </div>
-                  <div>
+                  <div className="col-span-2 sm:col-span-1">
                     <label className="block text-sm font-medium text-gray-700 mb-1">Stock Mín.</label>
                     <input
                       type="number"
@@ -284,7 +364,7 @@ export default function Productos() {
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                  className="px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
                 >
                   Cancelar
                 </button>

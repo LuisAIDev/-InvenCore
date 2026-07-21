@@ -22,15 +22,15 @@ export default function Categorias() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-6 sm:mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Categorías</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Categorías</h1>
           <p className="text-sm text-gray-500 mt-1">Administración de categorías de productos</p>
         </div>
       </div>
 
       <div className="card overflow-hidden !p-0">
-        <div className="overflow-x-auto">
+        <div className="hidden sm:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
@@ -55,6 +55,24 @@ export default function Categorias() {
               )}
             </tbody>
           </table>
+        </div>
+
+        <div className="sm:hidden divide-y divide-gray-100">
+          {loading ? (
+            <div className="p-4 text-center text-gray-500">Cargando...</div>
+          ) : categorias.length === 0 ? (
+            <div className="p-4 text-center text-gray-500">No hay categorías registradas.</div>
+          ) : (
+            categorias.map((c) => (
+              <div key={c.id} className="p-4 space-y-1">
+                <div className="flex items-center justify-between">
+                  <p className="font-medium text-gray-900">{c.nombre}</p>
+                  <span className="text-xs text-gray-400 font-mono">#{c.id}</span>
+                </div>
+                <p className="text-sm text-gray-500">{c.descripcion || 'Sin descripción'}</p>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>

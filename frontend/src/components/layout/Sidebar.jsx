@@ -8,44 +8,71 @@ const navItems = [
   { to: '/usuarios', label: 'Usuarios', icon: 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z' },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, onClose }) {
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-sidebar flex flex-col z-50">
-      <div className="flex items-center gap-3 px-6 h-16 border-b border-gray-700">
-        <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-          <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-          </svg>
-        </div>
-        <span className="text-white text-xl font-bold tracking-tight">InvenCore</span>
-      </div>
+    <>
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 sm:hidden"
+          onClick={onClose}
+        />
+      )}
 
-      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            end={item.to === '/'}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors duration-200 ${
-                isActive
-                  ? 'bg-primary-800 text-white'
-                  : 'text-gray-300 hover:bg-sidebar-hover hover:text-white'
-              }`
-            }
+      <aside
+        className={`
+          fixed left-0 top-0 h-screen w-64 bg-sidebar flex flex-col z-50
+          transition-transform duration-300
+          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+          sm:translate-x-0
+        `}
+      >
+        <div className="flex items-center justify-between px-6 h-16 border-b border-gray-700">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+            </div>
+            <span className="text-white text-xl font-bold tracking-tight">InvenCore</span>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-white sm:hidden"
           >
-            <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
-            {item.label}
-          </NavLink>
-        ))}
-      </nav>
+          </button>
+        </div>
 
-      <div className="px-4 py-4 border-t border-gray-700">
-        <p className="text-xs text-gray-500">© 2026 InvenCore</p>
-        <p className="text-xs text-gray-500">v1.0.0</p>
-      </div>
-    </aside>
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === '/'}
+              onClick={onClose}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors duration-200 ${
+                  isActive
+                    ? 'bg-primary-800 text-white'
+                    : 'text-gray-300 hover:bg-sidebar-hover hover:text-white'
+                }`
+              }
+            >
+              <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
+              </svg>
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className="px-4 py-4 border-t border-gray-700">
+          <p className="text-xs text-gray-500">© 2026 InvenCore</p>
+          <p className="text-xs text-gray-500">v1.0.0</p>
+        </div>
+      </aside>
+    </>
   );
 }
