@@ -19,4 +19,6 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     @Query("SELECT p FROM Producto p WHERE p.stock <= p.stockMinimo AND p.activo = true")
     Page<Producto> findProductosConStockBajo(Pageable pageable);
     boolean existsByNombre(String nombre);
+    Page<Producto> findByActivoTrueAndStockGreaterThan(Integer stock, Pageable pageable);
+    Page<Producto> findByActivoTrueAndStockGreaterThanAndCategoriaId(Integer stock, Long categoriaId, Pageable pageable);
 }

@@ -88,6 +88,11 @@ export default function Login() {
           </Link>
         </p>
 
+        <p className="text-center mt-6">
+          <Link to="/catalogo" className="text-sm text-blue-600 hover:text-blue-800 font-medium">
+            Ver catálogo sin iniciar sesión
+          </Link>
+        </p>
         <p className="text-center text-xs text-gray-400 mt-4">
           InvenCore v1.0 — Sistema de Inventario Empresarial
         </p>

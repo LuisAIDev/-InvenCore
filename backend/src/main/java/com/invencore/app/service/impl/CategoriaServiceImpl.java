@@ -2,6 +2,7 @@ package com.invencore.app.service.impl;
 
 import com.invencore.app.exception.ResourceNotFoundException;
 import com.invencore.app.model.dto.CategoriaDTO;
+import com.invencore.app.model.dto.CategoriaPublicaDTO;
 import com.invencore.app.model.entity.Categoria;
 import com.invencore.app.repository.CategoriaRepository;
 import com.invencore.app.service.CategoriaService;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -55,11 +58,26 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
+    public List<CategoriaPublicaDTO> listarPublicas() {
+        return categoriaRepository.findByActivoTrue()
+                .stream()
+                .map(this::toPublicoDTO)
+                .toList();
+    }
+
+    @Override
     public void eliminar(Long id) {
         Categoria categoria = categoriaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada con id: " + id));
         categoria.setActivo(false);
         categoriaRepository.save(categoria);
+    }
+
+    private CategoriaPublicaDTO toPublicoDTO(Categoria c) {
+        CategoriaPublicaDTO dto = new CategoriaPublicaDTO();
+        dto.setId(c.getId());
+        dto.setNombre(c.getNombre());
+        return dto;
     }
 
     private CategoriaDTO toDTO(Categoria c) {

@@ -2,6 +2,7 @@ package com.invencore.app.service.impl;
 
 import com.invencore.app.exception.ResourceNotFoundException;
 import com.invencore.app.model.dto.ProductoDTO;
+import com.invencore.app.model.dto.ProductoPublicoDTO;
 import com.invencore.app.model.entity.Categoria;
 import com.invencore.app.model.entity.Producto;
 import com.invencore.app.repository.CategoriaRepository;
@@ -33,6 +34,17 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public Page<ProductoDTO> listarActivos(Pageable pageable) {
         return productoRepository.findByActivoTrue(pageable).map(this::toDTO);
+    }
+
+    @Override
+    public Page<ProductoPublicoDTO> listarPublicos(Long categoriaId, Pageable pageable) {
+        Page<Producto> productos;
+        if (categoriaId != null) {
+            productos = productoRepository.findByActivoTrueAndStockGreaterThanAndCategoriaId(0, categoriaId, pageable);
+        } else {
+            productos = productoRepository.findByActivoTrueAndStockGreaterThan(0, pageable);
+        }
+        return productos.map(this::toPublicoDTO);
     }
 
     @Override
@@ -88,6 +100,20 @@ public class ProductoServiceImpl implements ProductoService {
                 .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado con id: " + id));
         producto.setActivo(false);
         productoRepository.save(producto);
+    }
+
+    private ProductoPublicoDTO toPublicoDTO(Producto p) {
+        ProductoPublicoDTO dto = new ProductoPublicoDTO();
+        dto.setId(p.getId());
+        dto.setNombre(p.getNombre());
+        dto.setDescripcion(p.getDescripcion());
+        dto.setPrecio(p.getPrecio());
+        dto.setDisponible(p.getStock() > 0);
+        if (p.getCategoria() != null) {
+            dto.setCategoriaId(p.getCategoria().getId());
+            dto.setCategoriaNombre(p.getCategoria().getNombre());
+        }
+        return dto;
     }
 
     private ProductoDTO toDTO(Producto p) {

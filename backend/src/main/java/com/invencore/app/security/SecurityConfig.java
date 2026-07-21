@@ -51,6 +51,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/api/productos/**").authenticated()
                 .requestMatchers(HttpMethod.DELETE, "/api/productos/**").authenticated()
                 .requestMatchers(HttpMethod.GET, "/api/categorias/**").permitAll()
+                .requestMatchers("/api/publico/**").permitAll()
                 .requestMatchers("/api/health").permitAll()
                 .requestMatchers("/actuator/health", "/actuator/info").permitAll()
                 .anyRequest().authenticated()

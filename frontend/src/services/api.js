@@ -49,4 +49,9 @@ export const movimientoService = {
   registrar: (data) => api.post('/movimientos', data),
 };
 
+export const publicoService = {
+  listarProductos: (params) => api.get('/publico/productos', { params }),
+  listarCategorias: () => api.get('/publico/categorias'),
+};
+
 export default api;
