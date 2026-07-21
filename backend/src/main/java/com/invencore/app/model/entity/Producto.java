@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -58,5 +59,6 @@ public class Producto {
     private Categoria categoria;
 
     @ManyToMany(mappedBy = "productos")
+    @EqualsAndHashCode.Exclude
     private Set<Oferta> ofertas;
 }

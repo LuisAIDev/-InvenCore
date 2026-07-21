@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -51,5 +52,6 @@ public class Oferta {
             inverseJoinColumns = @JoinColumn(name = "producto_id")
     )
     @Builder.Default
+    @EqualsAndHashCode.Exclude
     private Set<Producto> productos = new HashSet<>();
 }
