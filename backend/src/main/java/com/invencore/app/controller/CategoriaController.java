@@ -4,12 +4,13 @@ import com.invencore.app.model.dto.CategoriaDTO;
 import com.invencore.app.service.CategoriaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/categorias")
@@ -19,14 +20,16 @@ public class CategoriaController {
     private final CategoriaService categoriaService;
 
     @GetMapping
-    public ResponseEntity<List<CategoriaDTO>> listarActivos() {
-        return ResponseEntity.ok(categoriaService.listarActivos());
+    public ResponseEntity<Page<CategoriaDTO>> listarActivos(
+            @PageableDefault(size = 20, sort = "nombre") Pageable pageable) {
+        return ResponseEntity.ok(categoriaService.listarActivos(pageable));
     }
 
     @GetMapping("/todos")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<CategoriaDTO>> listarTodos() {
-        return ResponseEntity.ok(categoriaService.listarTodos());
+    public ResponseEntity<Page<CategoriaDTO>> listarTodos(
+            @PageableDefault(size = 20, sort = "nombre") Pageable pageable) {
+        return ResponseEntity.ok(categoriaService.listarTodos(pageable));
     }
 
     @GetMapping("/{id}")

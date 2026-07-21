@@ -15,12 +15,14 @@ export default function Dashboard() {
     const fetchMetrics = async () => {
       try {
         const [prodRes, movRes] = await Promise.allSettled([
-          productoService.listarActivos(),
-          API.get('/movimientos'),
+          productoService.listarActivos({ page: 0, size: 10000 }),
+          API.get('/movimientos', { params: { page: 0, size: 10000 } }),
         ]);
 
-        const productos = prodRes.status === 'fulfilled' ? prodRes.value.data : [];
-        const movimientos = movRes.status === 'fulfilled' ? movRes.value.data : [];
+        const prodData = prodRes.status === 'fulfilled' ? (prodRes.value.data.content || prodRes.value.data) : [];
+        const movData = movRes.status === 'fulfilled' ? (movRes.value.data.content || movRes.value.data) : [];
+        const productos = Array.isArray(prodData) ? prodData : [];
+        const movimientos = Array.isArray(movData) ? movData : [];
 
         const activos = productos.filter((p) => p.activo !== false).length;
         const bajo = productos.filter(

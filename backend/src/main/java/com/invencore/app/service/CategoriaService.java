@@ -1,12 +1,12 @@
 package com.invencore.app.service;
 
 import com.invencore.app.model.dto.CategoriaDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CategoriaService {
-    List<CategoriaDTO> listarTodos();
-    List<CategoriaDTO> listarActivos();
+    Page<CategoriaDTO> listarTodos(Pageable pageable);
+    Page<CategoriaDTO> listarActivos(Pageable pageable);
     CategoriaDTO buscarPorId(Long id);
     CategoriaDTO crear(CategoriaDTO dto);
     CategoriaDTO actualizar(Long id, CategoriaDTO dto);

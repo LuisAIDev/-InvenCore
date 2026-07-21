@@ -12,7 +12,7 @@ export default function Categorias() {
   const fetchCategorias = async () => {
     try {
       const res = await API.get('/categorias');
-      setCategorias(res.data);
+      setCategorias(res.data.content || res.data);
     } catch {
       setCategorias([]);
     } finally {

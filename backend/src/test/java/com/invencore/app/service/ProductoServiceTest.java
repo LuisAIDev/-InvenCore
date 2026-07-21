@@ -14,6 +14,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -87,7 +90,7 @@ class ProductoServiceTest {
     }
 
     @Test
-    void listarActivos_debeRetornarListaDeProductosActivos() {
+    void listarActivos_debeRetornarPaginaDeProductosActivos() {
         Categoria categoria = new Categoria();
         categoria.setId(1L);
         categoria.setNombre("Electrónicos");
@@ -95,13 +98,14 @@ class ProductoServiceTest {
         Producto p1 = Producto.builder().id(1L).nombre("Laptop").precio(BigDecimal.valueOf(15000)).stock(10).stockMinimo(3).activo(true).categoria(categoria).build();
         Producto p2 = Producto.builder().id(2L).nombre("Mouse").precio(BigDecimal.valueOf(500)).stock(20).stockMinimo(5).activo(true).categoria(categoria).build();
 
-        when(productoRepository.findByActivoTrue()).thenReturn(List.of(p1, p2));
+        Page<Producto> page = new PageImpl<>(List.of(p1, p2));
+        when(productoRepository.findByActivoTrue(any(Pageable.class))).thenReturn(page);
 
-        List<ProductoDTO> resultados = productoService.listarActivos();
+        Page<ProductoDTO> resultados = productoService.listarActivos(Pageable.ofSize(10));
 
         assertThat(resultados).hasSize(2);
-        assertThat(resultados.get(0).getNombre()).isEqualTo("Laptop");
-        assertThat(resultados.get(1).getNombre()).isEqualTo("Mouse");
+        assertThat(resultados.getContent().get(0).getNombre()).isEqualTo("Laptop");
+        assertThat(resultados.getContent().get(1).getNombre()).isEqualTo("Mouse");
     }
 
     @Test

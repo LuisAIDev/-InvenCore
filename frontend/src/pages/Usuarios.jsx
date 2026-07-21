@@ -12,7 +12,7 @@ export default function Usuarios() {
   const fetchUsuarios = async () => {
     try {
       const res = await API.get('/usuarios');
-      setUsuarios(res.data);
+      setUsuarios(res.data.content || res.data);
     } catch {
       setUsuarios([]);
     } finally {

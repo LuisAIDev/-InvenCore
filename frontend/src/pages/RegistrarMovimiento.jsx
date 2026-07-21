@@ -17,8 +17,8 @@ export default function RegistrarMovimiento() {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    productoService.listarActivos()
-      .then((res) => setProductos(res.data))
+    productoService.listarActivos({ params: { size: 1000 } })
+      .then((res) => setProductos(res.data.content || res.data))
       .catch(() => setProductos([]));
   }, []);
 

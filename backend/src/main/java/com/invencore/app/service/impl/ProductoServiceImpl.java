@@ -10,11 +10,10 @@ import com.invencore.app.service.ProductoService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,21 +26,18 @@ public class ProductoServiceImpl implements ProductoService {
     private final CategoriaRepository categoriaRepository;
 
     @Override
-    public List<ProductoDTO> listarTodos() {
-        return productoRepository.findAll()
-                .stream().map(this::toDTO).collect(Collectors.toList());
+    public Page<ProductoDTO> listarTodos(Pageable pageable) {
+        return productoRepository.findAll(pageable).map(this::toDTO);
     }
 
     @Override
-    public List<ProductoDTO> listarActivos() {
-        return productoRepository.findByActivoTrue()
-                .stream().map(this::toDTO).collect(Collectors.toList());
+    public Page<ProductoDTO> listarActivos(Pageable pageable) {
+        return productoRepository.findByActivoTrue(pageable).map(this::toDTO);
     }
 
     @Override
-    public List<ProductoDTO> listarConStockBajo() {
-        return productoRepository.findProductosConStockBajo()
-                .stream().map(this::toDTO).collect(Collectors.toList());
+    public Page<ProductoDTO> listarConStockBajo(Pageable pageable) {
+        return productoRepository.findProductosConStockBajo(pageable).map(this::toDTO);
     }
 
     @Override

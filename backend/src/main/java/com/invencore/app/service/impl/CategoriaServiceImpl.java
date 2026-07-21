@@ -6,11 +6,10 @@ import com.invencore.app.model.entity.Categoria;
 import com.invencore.app.repository.CategoriaRepository;
 import com.invencore.app.service.CategoriaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,15 +19,13 @@ public class CategoriaServiceImpl implements CategoriaService {
     private final CategoriaRepository categoriaRepository;
 
     @Override
-    public List<CategoriaDTO> listarTodos() {
-        return categoriaRepository.findAll()
-                .stream().map(this::toDTO).collect(Collectors.toList());
+    public Page<CategoriaDTO> listarTodos(Pageable pageable) {
+        return categoriaRepository.findAll(pageable).map(this::toDTO);
     }
 
     @Override
-    public List<CategoriaDTO> listarActivos() {
-        return categoriaRepository.findByActivoTrue()
-                .stream().map(this::toDTO).collect(Collectors.toList());
+    public Page<CategoriaDTO> listarActivos(Pageable pageable) {
+        return categoriaRepository.findByActivoTrue(pageable).map(this::toDTO);
     }
 
     @Override

@@ -36,11 +36,11 @@ export default function OperadorDashboard() {
     const fetchData = async () => {
       try {
         const [prodRes, movRes] = await Promise.all([
-          productoService.listarActivos(),
-          movimientoService.listarTodos(),
+          productoService.listarActivos({ page: 0, size: 10000 }),
+          movimientoService.listarTodos({ page: 0, size: 10000 }),
         ]);
-        setProductos(prodRes.data);
-        setMovimientos(movRes.data);
+        setProductos(prodRes.data.content || prodRes.data);
+        setMovimientos(movRes.data.content || movRes.data);
       } catch {
         setProductos([]);
         setMovimientos([]);

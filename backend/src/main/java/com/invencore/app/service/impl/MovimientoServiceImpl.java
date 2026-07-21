@@ -13,12 +13,12 @@ import com.invencore.app.service.MovimientoService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,27 +32,23 @@ public class MovimientoServiceImpl implements MovimientoService {
     private final UsuarioRepository usuarioRepository;
 
     @Override
-    public List<MovimientoDTO> listarTodos() {
-        return movimientoRepository.findAll()
-                .stream().map(this::toDTO).collect(Collectors.toList());
+    public Page<MovimientoDTO> listarTodos(Pageable pageable) {
+        return movimientoRepository.findAll(pageable).map(this::toDTO);
     }
 
     @Override
-    public List<MovimientoDTO> listarPorProducto(Long productoId) {
-        return movimientoRepository.findByProductoId(productoId)
-                .stream().map(this::toDTO).collect(Collectors.toList());
+    public Page<MovimientoDTO> listarPorProducto(Long productoId, Pageable pageable) {
+        return movimientoRepository.findByProductoId(productoId, pageable).map(this::toDTO);
     }
 
     @Override
-    public List<MovimientoDTO> listarPorTipo(TipoMovimiento tipo) {
-        return movimientoRepository.findByTipo(tipo)
-                .stream().map(this::toDTO).collect(Collectors.toList());
+    public Page<MovimientoDTO> listarPorTipo(TipoMovimiento tipo, Pageable pageable) {
+        return movimientoRepository.findByTipo(tipo, pageable).map(this::toDTO);
     }
 
     @Override
-    public List<MovimientoDTO> listarPorFechas(LocalDateTime inicio, LocalDateTime fin) {
-        return movimientoRepository.findByFechaBetween(inicio, fin)
-                .stream().map(this::toDTO).collect(Collectors.toList());
+    public Page<MovimientoDTO> listarPorFechas(LocalDateTime inicio, LocalDateTime fin, Pageable pageable) {
+        return movimientoRepository.findByFechaBetween(inicio, fin, pageable).map(this::toDTO);
     }
 
     @Override

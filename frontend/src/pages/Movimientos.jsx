@@ -4,15 +4,18 @@ import API from '../services/api';
 export default function Movimientos() {
   const [movimientos, setMovimientos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
     fetchMovimientos();
-  }, []);
+  }, [page]);
 
   const fetchMovimientos = async () => {
     try {
-      const res = await API.get('/movimientos');
-      setMovimientos(res.data);
+      const res = await API.get('/movimientos', { params: { page, size: 10 } });
+      setMovimientos(res.data.content || []);
+      setTotalPages(res.data.totalPages || 0);
     } catch {
       setMovimientos([]);
     } finally {
@@ -101,6 +104,29 @@ export default function Movimientos() {
           )}
         </div>
       </div>
+
+      {/* Paginación */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between px-4 py-3 bg-gray-50 border-t border-gray-200 rounded-b-xl mt-4">
+          <p className="text-sm text-gray-600">Página {page + 1} de {totalPages}</p>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setPage(p => Math.max(0, p - 1))}
+              disabled={page === 0}
+              className="px-3 py-1.5 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              Anterior
+            </button>
+            <button
+              onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+              disabled={page >= totalPages - 1}
+              className="px-3 py-1.5 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              Siguiente
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

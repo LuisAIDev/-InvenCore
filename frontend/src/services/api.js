@@ -34,9 +34,9 @@ export const authService = {
 };
 
 export const productoService = {
-  listarActivos: () => api.get('/productos'),
-  listarTodos: () => api.get('/productos/todos'),
-  stockBajo: () => api.get('/productos/stock-bajo'),
+  listarActivos: (params) => api.get('/productos', { params }),
+  listarTodos: (params) => api.get('/productos/todos', { params }),
+  stockBajo: (params) => api.get('/productos/stock-bajo', { params }),
   buscarPorId: (id) => api.get(`/productos/${id}`),
   crear: (data) => api.post('/productos', data),
   actualizar: (id, data) => api.put(`/productos/${id}`, data),
@@ -44,8 +44,8 @@ export const productoService = {
 };
 
 export const movimientoService = {
-  listarTodos: () => api.get('/movimientos'),
-  listarPorProducto: (id) => api.get(`/movimientos/producto/${id}`),
+  listarTodos: (params) => api.get('/movimientos', { params }),
+  listarPorProducto: (id, params) => api.get(`/movimientos/producto/${id}`, { params }),
   registrar: (data) => api.post('/movimientos', data),
 };
 

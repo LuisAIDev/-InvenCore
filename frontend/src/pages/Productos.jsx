@@ -8,6 +8,9 @@ export default function Productos() {
   const [editing, setEditing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [categorias, setCategorias] = useState([]);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
   const [form, setForm] = useState({
     nombre: '',
     categoriaId: '',
@@ -18,18 +21,20 @@ export default function Productos() {
 
   useEffect(() => {
     fetchProductos();
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     API.get('/categorias')
-      .then(res => setCategorias(res.data))
+      .then(res => setCategorias(res.data.content || res.data))
       .catch(() => {});
   }, []);
 
   const fetchProductos = async () => {
     try {
-      const res = await API.get('/productos');
-      setProductos(res.data);
+      const res = await API.get('/productos', { params: { page, size: 10 } });
+      setProductos(res.data.content || []);
+      setTotalPages(res.data.totalPages || 0);
+      setTotalElements(res.data.totalElements || 0);
     } catch {
       setProductos([]);
     } finally {
@@ -57,7 +62,7 @@ export default function Productos() {
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Productos</h1>
           <p className="text-sm text-gray-500 mt-1">
-            {productos.length} producto{productos.length !== 1 ? 's' : ''} registrado{productos.length !== 1 ? 's' : ''}
+            {totalElements} producto{totalElements !== 1 ? 's' : ''} registrado{totalElements !== 1 ? 's' : ''}
           </p>
         </div>
         <button
@@ -273,6 +278,31 @@ export default function Productos() {
           )}
         </div>
       </div>
+
+      {/* Paginación */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between px-4 py-3 bg-gray-50 border-t border-gray-200">
+          <p className="text-sm text-gray-600">
+            Página {page + 1} de {totalPages}
+          </p>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setPage(p => Math.max(0, p - 1))}
+              disabled={page === 0}
+              className="px-3 py-1.5 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              Anterior
+            </button>
+            <button
+              onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+              disabled={page >= totalPages - 1}
+              className="px-3 py-1.5 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              Siguiente
+            </button>
+          </div>
+        </div>
+      )}
 
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
