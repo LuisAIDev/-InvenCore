@@ -73,6 +73,7 @@ public class MovimientoServiceImpl implements MovimientoService {
                 .tipo(dto.getTipo())
                 .cantidad(dto.getCantidad())
                 .descripcion(dto.getDescripcion())
+                .motivo(dto.getMotivo())
                 .producto(producto)
                 .usuario(usuario)
                 .build();
@@ -89,6 +90,7 @@ public class MovimientoServiceImpl implements MovimientoService {
         dto.setTipo(m.getTipo());
         dto.setCantidad(m.getCantidad());
         dto.setDescripcion(m.getDescripcion());
+        dto.setMotivo(m.getMotivo());
         dto.setFecha(m.getFecha());
         dto.setProductoId(m.getProducto().getId());
         dto.setProductoNombre(m.getProducto().getNombre());

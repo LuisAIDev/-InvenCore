@@ -16,6 +16,7 @@ public class MovimientoDTO {
     @Min(1)
     private Integer cantidad;
     private String descripcion;
+    private String motivo;
     private LocalDateTime fecha;
     @NotNull(message = "El producto es obligatorio")
     private Long productoId;

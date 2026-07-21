@@ -33,6 +33,8 @@ public class Movimiento {
 
     private String descripcion;
 
+    private String motivo;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime fecha;
