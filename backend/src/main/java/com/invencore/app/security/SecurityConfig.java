@@ -31,6 +31,8 @@ public class SecurityConfig {
     @Lazy
     private final JwtAuthFilter jwtAuthFilter;
 
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
     @Value("${CORS_ALLOWED_ORIGINS:http://localhost:5173}")
     private String corsAllowedOrigins;
 
@@ -49,6 +51,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/health").permitAll()
                 .anyRequest().authenticated()
             )
+            .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
