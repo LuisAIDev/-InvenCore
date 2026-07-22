@@ -90,7 +90,7 @@ class PedidoServiceTest {
         when(mockPi.toJson()).thenReturn("{\"id\":\"pi_test_123\"}");
 
         when(productoRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(producto));
-        when(ofertaRepository.findActiveOffersForProduct(1L, LocalDateTime.now())).thenReturn(List.of(oferta));
+        when(ofertaRepository.findActiveOffersForProduct(eq(1L), any(LocalDateTime.class))).thenReturn(List.of(oferta));
         when(pedidoRepository.save(any(Pedido.class))).thenReturn(pedidoGuardado);
         when(pagoRepository.save(any(Pago.class))).thenReturn(pago);
         when(stripeService.createPaymentIntent(anyLong(), anyString(), anyString())).thenReturn(mockPi);
