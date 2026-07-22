@@ -5,7 +5,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { publicoService } from '../services/api';
 import { useCart } from '../context/CartContext';
 
-const stripePk = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_placeholder';
+const stripePk = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
 
 const stripePromise = loadStripe(stripePk);
 

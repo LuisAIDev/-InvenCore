@@ -21,5 +21,13 @@ Thumbs.db
 # Credenciales (IMPORTANTE - nunca subir)
 application-prod.properties
 
-# Entorno local Docker
+# Archivos de entorno local
 .env
+.env.*
+!.env.example
+
+# Certificados / llaves privadas
+*.pem
+*.p12
+*.jks
+*.key
