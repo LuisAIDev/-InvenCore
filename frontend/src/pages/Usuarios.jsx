@@ -31,14 +31,21 @@ export default function Usuarios() {
 
       <div className="card overflow-hidden !p-0">
         <div className="hidden sm:block overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm table-fixed">
+            <colgroup>
+              <col className="w-[60px]" />
+              <col className="w-[160px]" />
+              <col />
+              <col className="w-[120px]" />
+              <col className="w-[110px]" />
+            </colgroup>
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">ID</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">Nombre</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">Email</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">Rol</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">Estado</th>
+                <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">ID</th>
+                <th className="px-4 py-3 text-left font-semibold text-gray-600 text-xs uppercase tracking-wider">Nombre</th>
+                <th className="px-4 py-3 text-left font-semibold text-gray-600 text-xs uppercase tracking-wider">Email</th>
+                <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">Rol</th>
+                <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">Estado</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -49,15 +56,15 @@ export default function Usuarios() {
               ) : (
                 usuarios.map((u) => (
                   <tr key={u.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-4 py-3 font-mono text-xs text-gray-500">#{u.id}</td>
-                    <td className="px-4 py-3 font-medium text-gray-800">{u.nombre}</td>
-                    <td className="px-4 py-3 text-gray-600">{u.email}</td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 text-center font-mono text-xs text-gray-500">#{u.id}</td>
+                    <td className="px-4 py-3 font-medium text-gray-800 truncate min-w-0" title={u.nombre}>{u.nombre}</td>
+                    <td className="px-4 py-3 text-gray-600 truncate min-w-0" title={u.email}>{u.email}</td>
+                    <td className="px-4 py-3 text-center">
                       <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
                         {u.rol}
                       </span>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 text-center">
                       <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         u.activo !== false ? 'bg-green-100 text-success' : 'bg-red-100 text-danger'
                       }`}>

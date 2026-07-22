@@ -31,12 +31,17 @@ export default function Categorias() {
 
       <div className="card overflow-hidden !p-0">
         <div className="hidden sm:block overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm table-fixed">
+            <colgroup>
+              <col className="w-[60px]" />
+              <col className="w-[200px]" />
+              <col />
+            </colgroup>
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">ID</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">Nombre</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">Descripción</th>
+                <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">ID</th>
+                <th className="px-4 py-3 text-left font-semibold text-gray-600 text-xs uppercase tracking-wider">Nombre</th>
+                <th className="px-4 py-3 text-left font-semibold text-gray-600 text-xs uppercase tracking-wider">Descripción</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -47,9 +52,9 @@ export default function Categorias() {
               ) : (
                 categorias.map((c) => (
                   <tr key={c.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-4 py-3 font-mono text-xs text-gray-500">#{c.id}</td>
-                    <td className="px-4 py-3 font-medium text-gray-800">{c.nombre}</td>
-                    <td className="px-4 py-3 text-gray-600">{c.descripcion || '—'}</td>
+                    <td className="px-4 py-3 text-center font-mono text-xs text-gray-500">#{c.id}</td>
+                    <td className="px-4 py-3 font-medium text-gray-800 truncate min-w-0" title={c.nombre}>{c.nombre}</td>
+                    <td className="px-4 py-3 text-gray-600 truncate min-w-0" title={c.descripcion || '—'}>{c.descripcion || '—'}</td>
                   </tr>
                 ))
               )}

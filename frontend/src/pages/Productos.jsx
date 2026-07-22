@@ -100,24 +100,36 @@ export default function Productos() {
 
       <div className="card overflow-hidden !p-0">
         <div className="hidden sm:block overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm table-fixed">
+            <colgroup>
+              <col className="w-[60px]" />
+              <col className="w-[60px]" />
+              <col />
+              <col className="w-[140px]" />
+              <col className="w-[100px]" />
+              <col className="w-[72px]" />
+              <col className="w-[88px]" />
+              <col className="w-[110px]" />
+              <col className="w-[100px]" />
+            </colgroup>
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
-                <th className="text-left px-4 py-3 font-semibold text-gray-600 w-12">Img</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">Nombre</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">Categoría</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">Precio</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">Stock</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">Stock Mín.</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">Estado</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">Acciones</th>
+                <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">ID</th>
+                <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">Img</th>
+                <th className="px-4 py-3 text-left font-semibold text-gray-600 text-xs uppercase tracking-wider">Nombre</th>
+                <th className="px-4 py-3 text-left font-semibold text-gray-600 text-xs uppercase tracking-wider">Categoría</th>
+                <th className="px-4 py-3 text-right font-semibold text-gray-600 text-xs uppercase tracking-wider">Precio</th>
+                <th className="px-4 py-3 text-right font-semibold text-gray-600 text-xs uppercase tracking-wider">Stock</th>
+                <th className="px-4 py-3 text-right font-semibold text-gray-600 text-xs uppercase tracking-wider">Stock Mín</th>
+                <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">Estado</th>
+                <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">Acciones</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {loading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i}>
-                    {Array.from({ length: 8 }).map((__, j) => (
+                    {Array.from({ length: 9 }).map((__, j) => (
                       <td key={j} className="px-4 py-3">
                         <div className="h-4 bg-gray-200 rounded animate-pulse" />
                       </td>
@@ -126,7 +138,7 @@ export default function Productos() {
                 ))
               ) : filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="px-4 py-12 text-center text-gray-500">
+                  <td colSpan={9} className="px-4 py-12 text-center text-gray-500">
                     <svg className="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                     </svg>
@@ -138,20 +150,20 @@ export default function Productos() {
                   const bajoStock = p.stock <= p.stockMinimo;
                   return (
                     <tr key={p.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-4 py-3 font-mono text-xs text-gray-500">#{p.id}</td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 text-center font-mono text-xs text-gray-500">#{p.id}</td>
+                      <td className="px-4 py-3 text-center">
                         <ProductThumb url={p.imagenUrl} />
                       </td>
-                      <td className="px-4 py-3 font-medium text-gray-800">{p.nombre}</td>
-                      <td className="px-4 py-3 text-gray-600">{p.categoriaNombre || 'Sin categoría'}</td>
-                      <td className="px-4 py-3 text-gray-600">${parseFloat(p.precio).toFixed(2)}</td>
-                      <td className="px-4 py-3">
-                        <span className={`font-semibold ${bajoStock ? 'text-danger' : 'text-gray-800'}`}>
+                      <td className="px-4 py-3 font-medium text-gray-800 truncate min-w-0" title={p.nombre}>{p.nombre}</td>
+                      <td className="px-4 py-3 text-gray-600 truncate min-w-0" title={p.categoriaNombre || 'Sin categoría'}>{p.categoriaNombre || 'Sin categoría'}</td>
+                      <td className="px-4 py-3 text-right text-gray-600 tabular-nums">${parseFloat(p.precio).toFixed(2)}</td>
+                      <td className="px-4 py-3 text-right">
+                        <span className={`font-semibold tabular-nums ${bajoStock ? 'text-danger' : 'text-gray-800'}`}>
                           {p.stock}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-gray-600">{p.stockMinimo}</td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 text-right text-gray-600 tabular-nums">{p.stockMinimo}</td>
+                      <td className="px-4 py-3 text-center">
                         {bajoStock ? (
                           <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-danger">
                             <span className="w-1.5 h-1.5 rounded-full bg-danger animate-pulse" />
@@ -164,8 +176,8 @@ export default function Productos() {
                           </span>
                         )}
                       </td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-2">
+                      <td className="px-4 py-3 text-center">
+                        <div className="inline-flex items-center gap-1">
                           <button
                             onClick={() => {
                               setEditing(p);

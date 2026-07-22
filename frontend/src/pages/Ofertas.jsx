@@ -130,37 +130,44 @@ export default function Ofertas() {
       ) : (
         <div className="card overflow-hidden !p-0">
           <div className="hidden sm:block overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-sm table-fixed">
+              <colgroup>
+                <col />
+                <col className="w-[120px]" />
+                <col className="w-[170px]" />
+                <col className="w-[170px]" />
+                <col className="w-[100px]" />
+                <col className="w-[120px]" />
+                <col className="w-[130px]" />
+              </colgroup>
               <thead className="bg-gray-50 border-b border-gray-100">
                 <tr>
-                  <th className="text-left px-6 py-4 font-semibold text-gray-600">Nombre</th>
-                  <th className="text-left px-6 py-4 font-semibold text-gray-600">% Descuento</th>
-                  <th className="text-left px-6 py-4 font-semibold text-gray-600">Inicio</th>
-                  <th className="text-left px-6 py-4 font-semibold text-gray-600">Fin</th>
-                  <th className="text-left px-6 py-4 font-semibold text-gray-600">Estado</th>
-                  <th className="text-left px-6 py-4 font-semibold text-gray-600">Productos</th>
-                  <th className="text-right px-6 py-4 font-semibold text-gray-600">Acciones</th>
+                  <th className="px-4 py-3 text-left font-semibold text-gray-600 text-xs uppercase tracking-wider">Nombre</th>
+                  <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">% Descuento</th>
+                  <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">Inicio</th>
+                  <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">Fin</th>
+                  <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">Estado</th>
+                  <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">Productos</th>
+                  <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">Acciones</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {ofertas.map((o) => (
                   <tr key={o.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 font-medium text-gray-900">{o.nombre}</td>
-                    <td className="px-6 py-4">
-                      <span className="text-danger font-bold">-{o.porcentajeDescuento}%</span>
-                    </td>
-                    <td className="px-6 py-4 text-gray-600 text-xs">{formatDate(o.fechaInicio)}</td>
-                    <td className="px-6 py-4 text-gray-600 text-xs">{formatDate(o.fechaFin)}</td>
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-3 font-medium text-gray-900 truncate min-w-0" title={o.nombre}>{o.nombre}</td>
+                    <td className="px-4 py-3 text-center"><span className="text-danger font-bold">-{o.porcentajeDescuento}%</span></td>
+                    <td className="px-4 py-3 text-center text-gray-600 text-xs whitespace-nowrap">{formatDate(o.fechaInicio)}</td>
+                    <td className="px-4 py-3 text-center text-gray-600 text-xs whitespace-nowrap">{formatDate(o.fechaFin)}</td>
+                    <td className="px-4 py-3 text-center">
                       {o.activa ? (
                         <span className="text-xs font-semibold text-success bg-green-50 px-2.5 py-1 rounded-full">Activa</span>
                       ) : (
                         <span className="text-xs font-semibold text-gray-400 bg-gray-100 px-2.5 py-1 rounded-full">Inactiva</span>
                       )}
                     </td>
-                    <td className="px-6 py-4 text-gray-600">{(o.productoIds || []).length} producto(s)</td>
-                    <td className="px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-2">
+                    <td className="px-4 py-3 text-center text-gray-600 text-sm">{(o.productoIds || []).length} producto(s)</td>
+                    <td className="px-4 py-3 text-center">
+                      <div className="inline-flex items-center gap-2">
                         <button onClick={() => openEdit(o)} className="text-primary-600 hover:text-primary-800 text-sm font-medium">Editar</button>
                         <button onClick={() => handleDelete(o.id)} className="text-danger hover:text-red-700 text-sm font-medium">Eliminar</button>
                       </div>

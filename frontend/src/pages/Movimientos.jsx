@@ -40,14 +40,21 @@ export default function Movimientos() {
 
       <div className="card overflow-hidden !p-0">
         <div className="hidden sm:block overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm table-fixed">
+            <colgroup>
+              <col className="w-[60px]" />
+              <col />
+              <col className="w-[100px]" />
+              <col className="w-[100px]" />
+              <col className="w-[180px]" />
+            </colgroup>
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">ID</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">Producto</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">Tipo</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">Cantidad</th>
-                <th className="text-left px-4 py-3 font-semibold text-gray-600">Fecha</th>
+                <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">ID</th>
+                <th className="px-4 py-3 text-left font-semibold text-gray-600 text-xs uppercase tracking-wider">Producto</th>
+                <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">Tipo</th>
+                <th className="px-4 py-3 text-right font-semibold text-gray-600 text-xs uppercase tracking-wider">Cantidad</th>
+                <th className="px-4 py-3 text-right font-semibold text-gray-600 text-xs uppercase tracking-wider">Fecha</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -58,15 +65,15 @@ export default function Movimientos() {
               ) : (
                 movimientos.map((m) => (
                   <tr key={m.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-4 py-3 font-mono text-xs text-gray-500">#{m.id}</td>
-                    <td className="px-4 py-3 font-medium text-gray-800">{m.producto?.nombre || `ID ${m.productoId}`}</td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 text-center font-mono text-xs text-gray-500">#{m.id}</td>
+                    <td className="px-4 py-3 font-medium text-gray-800 truncate min-w-0" title={m.producto?.nombre || `ID ${m.productoId}`}>{m.producto?.nombre || `ID ${m.productoId}`}</td>
+                    <td className="px-4 py-3 text-center">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getTipoBadge(m.tipo)}`}>
                         {m.tipo}
                       </span>
                     </td>
-                    <td className="px-4 py-3 font-semibold">{m.cantidad}</td>
-                    <td className="px-4 py-3 text-gray-500">
+                    <td className="px-4 py-3 text-right font-semibold tabular-nums">{m.cantidad}</td>
+                    <td className="px-4 py-3 text-right text-gray-500 text-xs whitespace-nowrap">
                       {m.fecha ? new Date(m.fecha).toLocaleString('es-MX') : '—'}
                     </td>
                   </tr>
