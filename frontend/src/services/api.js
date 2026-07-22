@@ -52,6 +52,15 @@ export const movimientoService = {
 export const publicoService = {
   listarProductos: (params) => api.get('/publico/productos', { params }),
   listarCategorias: () => api.get('/publico/categorias'),
+  crearPedido: (data) => api.post('/publico/pedidos', data),
+  obtenerPedido: (id) => api.get(`/publico/pedidos/${id}`),
+  confirmarPago: (id, token) => api.post(`/publico/pedidos/${id}/confirmar-pago?token=${token}`),
+};
+
+export const pedidoService = {
+  listarTodos: () => api.get('/admin/pedidos'),
+  obtener: (id) => api.get(`/admin/pedidos/${id}`),
+  cancelar: (id) => api.post(`/admin/pedidos/${id}/cancelar`),
 };
 
 export const ofertaService = {

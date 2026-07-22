@@ -2,8 +2,12 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { publicoService } from '../services/api';
 import ProductThumb from '../components/common/ProductThumb';
+import { useCart } from '../context/CartContext';
+import { useNavigate } from 'react-router-dom';
 
 function ProductCard({ producto }) {
+  const { addItem, count } = useCart();
+  const navigate = useNavigate();
   const tieneOferta = producto.precioOriginal != null;
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-200 flex flex-col">
@@ -37,30 +41,41 @@ function ProductCard({ producto }) {
         {producto.descripcion && (
           <p className="text-sm text-gray-500 mb-3 line-clamp-2 flex-1">{producto.descripcion}</p>
         )}
-        <div className="flex items-end justify-between mt-auto pt-3 border-t border-gray-100">
-          <div>
-            {tieneOferta ? (
-              <div className="flex flex-col">
-                <span className="text-sm line-through text-gray-400">
-                  ${producto.precioOriginal?.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
+          <div className="flex items-end justify-between mt-auto pt-3 border-t border-gray-100">
+            <div>
+              {tieneOferta ? (
+                <div className="flex flex-col">
+                  <span className="text-sm line-through text-gray-400">
+                    ${producto.precioOriginal?.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
+                  </span>
+                  <span className="text-2xl font-bold text-danger">
+                    ${producto.precioConDescuento?.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
+                  </span>
+                </div>
+              ) : (
+                <span className="text-2xl font-bold text-gray-900">
+                  ${producto.precio?.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                 </span>
-                <span className="text-2xl font-bold text-danger">
-                  ${producto.precioConDescuento?.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
-                </span>
-              </div>
-            ) : (
-              <span className="text-2xl font-bold text-gray-900">
-                ${producto.precio?.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
-              </span>
-            )}
+              )}
+            </div>
+            <button
+              onClick={(e) => { e.stopPropagation(); addItem(producto, 1); }}
+              className="flex-shrink-0 w-9 h-9 bg-primary-600 hover:bg-primary-700 text-white rounded-lg flex items-center justify-center transition-colors"
+              title="Agregar al carrito"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
 export default function Catalogo() {
+  const { count } = useCart();
+  const navigate = useNavigate();
   const [productos, setProductos] = useState({ content: [], totalPages: 0, totalElements: 0, number: 0 });
   const [categorias, setCategorias] = useState([]);
   const [categoriaId, setCategoriaId] = useState('');
@@ -100,12 +115,28 @@ export default function Catalogo() {
               <span className="text-xl font-bold text-gray-900 tracking-tight">InvenCore</span>
               <span className="hidden sm:inline text-sm text-gray-400 ml-2">Catálogo de Productos</span>
             </div>
-            <Link
-              to="/login"
-              className="text-sm font-medium text-primary-600 hover:text-primary-800 transition-colors"
-            >
-              Iniciar Sesión
-            </Link>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigate('/checkout')}
+                className="relative p-2 text-gray-500 hover:text-primary-600 transition-colors"
+                title="Carrito"
+              >
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
+                </svg>
+                {count > 0 && (
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-danger text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                    {count > 99 ? '99+' : count}
+                  </span>
+                )}
+              </button>
+              <Link
+                to="/login"
+                className="text-sm font-medium text-primary-600 hover:text-primary-800 transition-colors"
+              >
+                Iniciar Sesión
+              </Link>
+            </div>
           </div>
         </div>
       </header>

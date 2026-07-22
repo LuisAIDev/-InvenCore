@@ -1,6 +1,7 @@
 package com.invencore.app.service.impl;
 
 import com.invencore.app.exception.ResourceNotFoundException;
+import com.invencore.app.exception.StockInsuficienteException;
 import com.invencore.app.model.dto.MovimientoDTO;
 import com.invencore.app.model.entity.Movimiento;
 import com.invencore.app.model.entity.Producto;
@@ -62,7 +63,8 @@ public class MovimientoServiceImpl implements MovimientoService {
             if (producto.getStock() < dto.getCantidad()) {
                 log.warn("Stock insuficiente para salida: productoId={}, stockActual={}, cantidadSolicitada={}",
                         dto.getProductoId(), producto.getStock(), dto.getCantidad());
-                throw new RuntimeException("Stock insuficiente. Stock actual: " + producto.getStock());
+                throw new StockInsuficienteException(
+                        "Stock insuficiente. Stock actual: " + producto.getStock());
             }
             producto.setStock(producto.getStock() - dto.getCantidad());
         } else {

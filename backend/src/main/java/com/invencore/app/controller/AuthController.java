@@ -7,6 +7,12 @@ import com.invencore.app.model.entity.RolUsuario;
 import com.invencore.app.model.entity.Usuario;
 import com.invencore.app.repository.UsuarioRepository;
 import com.invencore.app.security.JwtUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -25,6 +31,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@Tag(name = "Authentication", description = "Registro e inicio de sesión")
 public class AuthController {
 
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
@@ -35,6 +42,13 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
+    @Operation(summary = "Iniciar sesión", description = "Autentica un usuario y retorna un token JWT")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Login exitoso",
+            content = @Content(schema = @Schema(implementation = JwtResponseDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Credenciales inválidas"),
+        @ApiResponse(responseCode = "401", description = "No autorizado")
+    })
     public ResponseEntity<JwtResponseDTO> login(@Valid @RequestBody AuthDTO dto) {
         try {
             Authentication auth = authenticationManager.authenticate(
@@ -51,6 +65,12 @@ public class AuthController {
     }
 
     @PostMapping("/registro")
+    @Operation(summary = "Registrar usuario", description = "Crea un nuevo usuario ADMIN u OPERADOR")
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Usuario registrado correctamente"),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos o email ya registrado"),
+        @ApiResponse(responseCode = "409", description = "El email ya está registrado")
+    })
     public ResponseEntity<?> registro(@Valid @RequestBody RegistroDTO dto) {
         if (usuarioRepository.existsByEmail(dto.getEmail())) {
             return ResponseEntity.badRequest()

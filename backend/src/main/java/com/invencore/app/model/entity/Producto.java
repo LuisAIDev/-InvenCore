@@ -63,4 +63,7 @@ public class Producto {
     @ManyToMany(mappedBy = "productos")
     @EqualsAndHashCode.Exclude
     private Set<Oferta> ofertas;
+
+    @Version
+    private Long version;
 }

@@ -1,11 +1,14 @@
 package com.invencore.app.service;
 
 import com.invencore.app.model.dto.OfertaDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface OfertaService {
     List<OfertaDTO> listarTodos();
+    Page<OfertaDTO> listarTodos(Pageable pageable);
     OfertaDTO buscarPorId(Long id);
     OfertaDTO crear(OfertaDTO dto);
     OfertaDTO actualizar(Long id, OfertaDTO dto);

@@ -19,7 +19,8 @@ import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,7 +53,12 @@ public class ProductoServiceImpl implements ProductoService {
         } else {
             productos = productoRepository.findByActivoTrueAndStockGreaterThan(0, pageable);
         }
-        return productos.map(this::toPublicoDTO);
+        List<Long> ids = productos.map(Producto::getId).toList();
+        Map<Long, List<Oferta>> ofertasPorProducto = ofertaRepository
+                .findActiveOffersForProducts(ids, LocalDateTime.now())
+                .stream()
+                .collect(Collectors.groupingBy(o -> o.getProductos().iterator().next().getId()));
+        return productos.map(p -> toPublicoDTO(p, ofertasPorProducto.getOrDefault(p.getId(), List.of())));
     }
 
     @Override
@@ -113,6 +119,11 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     private ProductoPublicoDTO toPublicoDTO(Producto p) {
+        List<Oferta> ofertasActivas = ofertaRepository.findActiveOffersForProduct(p.getId(), LocalDateTime.now());
+        return toPublicoDTO(p, ofertasActivas);
+    }
+
+    private ProductoPublicoDTO toPublicoDTO(Producto p, List<Oferta> ofertasActivas) {
         ProductoPublicoDTO dto = new ProductoPublicoDTO();
         dto.setId(p.getId());
         dto.setNombre(p.getNombre());
@@ -125,7 +136,6 @@ public class ProductoServiceImpl implements ProductoService {
             dto.setCategoriaNombre(p.getCategoria().getNombre());
         }
 
-        List<Oferta> ofertasActivas = ofertaRepository.findActiveOffersForProduct(p.getId(), LocalDateTime.now());
         if (!ofertasActivas.isEmpty()) {
             Oferta mejorOferta = ofertasActivas.stream()
                     .max(java.util.Comparator.comparing(Oferta::getPorcentajeDescuento))

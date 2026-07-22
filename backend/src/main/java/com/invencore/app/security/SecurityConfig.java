@@ -54,6 +54,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/publico/**").permitAll()
                 .requestMatchers("/api/health").permitAll()
                 .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
             )
             .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
@@ -76,7 +77,7 @@ public class SecurityConfig {
     public FilterRegistrationBean<RateLimitingFilter> rateLimitingFilterRegistration(RateLimitingFilter filter) {
         FilterRegistrationBean<RateLimitingFilter> bean = new FilterRegistrationBean<>(filter);
         bean.setUrlPatterns(Collections.singletonList("/api/*"));
-        bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE + 10);
         return bean;
     }
 

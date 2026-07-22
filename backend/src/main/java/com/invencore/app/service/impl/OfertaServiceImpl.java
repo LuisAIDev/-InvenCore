@@ -10,6 +10,8 @@ import com.invencore.app.service.OfertaService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,12 @@ public class OfertaServiceImpl implements OfertaService {
     @Transactional(readOnly = true)
     public List<OfertaDTO> listarTodos() {
         return ofertaRepository.findAll().stream().map(this::toDTO).toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<OfertaDTO> listarTodos(Pageable pageable) {
+        return ofertaRepository.findAll(pageable).map(this::toDTO);
     }
 
     @Override

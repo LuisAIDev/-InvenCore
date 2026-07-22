@@ -1,7 +1,7 @@
 package com.invencore.app.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.invencore.app.exception.ErrorResponse;
+import com.invencore.app.model.dto.ApiErrorResponse;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import jakarta.servlet.FilterChain;
@@ -83,13 +83,15 @@ public class RateLimitingFilter extends OncePerRequestFilter {
         servletResponse.setStatus(429);
         servletResponse.setContentType("application/json");
 
-        ErrorResponse error = new ErrorResponse(
-                LocalDateTime.now(),
-                429,
-                "Too Many Requests",
-                "Has excedido el límite de solicitudes. Intenta de nuevo en un minuto.",
-                request.getRequestURI()
-        );
+        ApiErrorResponse error = ApiErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(429)
+                .error("Too Many Requests")
+                .message("Has excedido el límite de solicitudes. Intenta de nuevo en un minuto.")
+                .path(request.getRequestURI())
+                .method(request.getMethod())
+                .traceId((String) request.getAttribute("traceId"))
+                .build();
 
         objectMapper.writeValue(servletResponse.getWriter(), error);
     }
