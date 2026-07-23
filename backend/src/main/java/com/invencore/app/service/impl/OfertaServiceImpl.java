@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +31,17 @@ public class OfertaServiceImpl implements OfertaService {
     @Override
     @Transactional(readOnly = true)
     public List<OfertaDTO> listarTodos() {
-        return ofertaRepository.findAll().stream().map(this::toDTO).toList();
+        List<Oferta> ofertas = ofertaRepository.findAll();
+        log.info("==== listarTodos() returning {} ofertas", ofertas.size());
+        for (Oferta o : ofertas) {
+            Set<Producto> ps = o.getProductos();
+            log.info("  oferta id={} nombre='{}' productos={}", o.getId(), o.getNombre(),
+                    ps == null ? "null" : ps.size() + " items");
+            if (ps != null && !ps.isEmpty()) {
+                log.info("    productoIds={}", ps.stream().map(Producto::getId).toList());
+            }
+        }
+        return ofertas.stream().map(this::toDTO).toList();
     }
 
     @Override
@@ -48,6 +59,7 @@ public class OfertaServiceImpl implements OfertaService {
 
     @Override
     public OfertaDTO crear(OfertaDTO dto) {
+        log.info("==== crear() called: nombre='{}', productoIds={}", dto.getNombre(), dto.getProductoIds());
         Oferta oferta = Oferta.builder()
                 .nombre(dto.getNombre())
                 .porcentajeDescuento(dto.getPorcentajeDescuento())
@@ -55,14 +67,24 @@ public class OfertaServiceImpl implements OfertaService {
                 .fechaFin(dto.getFechaFin())
                 .activa(dto.getActiva() != null ? dto.getActiva() : true)
                 .build();
+        log.info("Before loading products: entity productos size={}", oferta.getProductos().size());
         if (dto.getProductoIds() != null) {
             List<Producto> productos = productoRepository.findAllById(dto.getProductoIds());
-            oferta.getProductos().clear();
-            productos.forEach(oferta.getProductos()::add);
+            log.info("Loaded {} productos from DB (requested {})", productos.size(), dto.getProductoIds());
+            if (!productos.isEmpty()) {
+                oferta.getProductos().clear();
+                productos.forEach(oferta.getProductos()::add);
+                log.info("After adding products: entity productos size={}", oferta.getProductos().size());
+            }
         }
-        OfertaDTO saved = toDTO(ofertaRepository.save(oferta));
-        log.info("Oferta creada: id={}, nombre='{}', descuento={}%", saved.getId(), saved.getNombre(), saved.getPorcentajeDescuento());
-        return saved;
+        Oferta saved = ofertaRepository.save(oferta);
+        log.info("After save: id={}, productos size={}", saved.getId(), saved.getProductos().size());
+        if (!saved.getProductos().isEmpty()) {
+            log.info("Saved productos IDs: {}", saved.getProductos().stream().map(Producto::getId).toList());
+        }
+        OfertaDTO savedDTO = toDTO(saved);
+        log.info("Returning DTO: productoIds={}", savedDTO.getProductoIds());
+        return savedDTO;
     }
 
     @Override
