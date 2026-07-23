@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -56,9 +55,10 @@ public class OfertaServiceImpl implements OfertaService {
                 .fechaFin(dto.getFechaFin())
                 .activa(dto.getActiva() != null ? dto.getActiva() : true)
                 .build();
-        if (dto.getProductoIds() != null && !dto.getProductoIds().isEmpty()) {
+        if (dto.getProductoIds() != null) {
             List<Producto> productos = productoRepository.findAllById(dto.getProductoIds());
-            oferta.setProductos(new HashSet<>(productos));
+            oferta.getProductos().clear();
+            productos.forEach(oferta.getProductos()::add);
         }
         OfertaDTO saved = toDTO(ofertaRepository.save(oferta));
         log.info("Oferta creada: id={}, nombre='{}', descuento={}%", saved.getId(), saved.getNombre(), saved.getPorcentajeDescuento());
@@ -76,7 +76,8 @@ public class OfertaServiceImpl implements OfertaService {
         oferta.setActiva(dto.getActiva() != null ? dto.getActiva() : true);
         if (dto.getProductoIds() != null) {
             List<Producto> productos = productoRepository.findAllById(dto.getProductoIds());
-            oferta.setProductos(new HashSet<>(productos));
+            oferta.getProductos().clear();
+            productos.forEach(oferta.getProductos()::add);
         }
         OfertaDTO updated = toDTO(ofertaRepository.save(oferta));
         log.info("Oferta actualizada: id={}, nombre='{}'", id, updated.getNombre());

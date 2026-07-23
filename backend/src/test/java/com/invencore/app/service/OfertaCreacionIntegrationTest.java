@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -21,7 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@Transactional
 class OfertaCreacionIntegrationTest {
 
     @Autowired
@@ -70,6 +68,10 @@ class OfertaCreacionIntegrationTest {
         assertThat(result.getProductoIds()).isNotNull();
         assertThat(result.getProductoIds()).hasSize(2);
         assertThat(result.getProductoIds()).containsExactlyInAnyOrder(p1.getId(), p2.getId());
+
+        OfertaDTO reloaded = ofertaService.buscarPorId(result.getId());
+        assertThat(reloaded.getProductoIds()).hasSize(2);
+        assertThat(reloaded.getProductoIds()).containsExactlyInAnyOrder(p1.getId(), p2.getId());
     }
 
     @Test
@@ -96,10 +98,13 @@ class OfertaCreacionIntegrationTest {
         dto.setActiva(true);
         dto.setProductoIds(List.of(p1.getId()));
 
-        ofertaService.crear(dto);
+        OfertaDTO created = ofertaService.crear(dto);
 
         List<OfertaDTO> todas = ofertaService.listarTodos();
         assertThat(todas).hasSize(1);
         assertThat(todas.get(0).getProductoIds()).containsExactly(p1.getId());
+
+        OfertaDTO reloaded = ofertaService.buscarPorId(created.getId());
+        assertThat(reloaded.getProductoIds()).containsExactly(p1.getId());
     }
 }
