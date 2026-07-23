@@ -60,6 +60,8 @@ public class OfertaServiceImpl implements OfertaService {
     @Override
     public OfertaDTO crear(OfertaDTO dto) {
         log.info("==== crear() called: nombre='{}', productoIds={}", dto.getNombre(), dto.getProductoIds());
+        log.info("DTO class: {}", dto.getClass().getName());
+        log.info("DTO hashCode: {}", System.identityHashCode(dto));
         Oferta oferta = Oferta.builder()
                 .nombre(dto.getNombre())
                 .porcentajeDescuento(dto.getPorcentajeDescuento())
@@ -77,8 +79,9 @@ public class OfertaServiceImpl implements OfertaService {
                 log.info("After adding products: entity productos size={}", oferta.getProductos().size());
             }
         }
+        log.info("Before save: entity id={}, productos size={}, identityHash={}", oferta.getId(), oferta.getProductos().size(), System.identityHashCode(oferta));
         Oferta saved = ofertaRepository.save(oferta);
-        log.info("After save: id={}, productos size={}", saved.getId(), saved.getProductos().size());
+        log.info("After save: same entity={}, id={}, productos size={}, identityHash={}", saved == oferta, saved.getId(), saved.getProductos().size(), System.identityHashCode(saved));
         if (!saved.getProductos().isEmpty()) {
             log.info("Saved productos IDs: {}", saved.getProductos().stream().map(Producto::getId).toList());
         }
