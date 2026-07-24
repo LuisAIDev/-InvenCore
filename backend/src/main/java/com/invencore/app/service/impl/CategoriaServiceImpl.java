@@ -29,7 +29,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     public Page<CategoriaDTO> listarTodos(Pageable pageable) {
         Page<Categoria> categorias = categoriaRepository.findAll(pageable);
         List<Long> ids = categorias.stream().map(Categoria::getId).toList();
-        Map<Long, Long> counts = Map.of();
+        Map<Long, Long> counts;
         if (!ids.isEmpty()) {
             List<Object[]> results = productoRepository.countProductosPorCategoriaIds(ids);
             counts = results.stream()
@@ -37,6 +37,8 @@ public class CategoriaServiceImpl implements CategoriaService {
                             arr -> (Long) arr[0],
                             arr -> ((Number) arr[1]).longValue()
                     ));
+        } else {
+            counts = Map.of();
         }
         return categorias.map(c -> toDTO(c, counts.getOrDefault(c.getId(), 0L)));
     }
@@ -45,7 +47,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     public Page<CategoriaDTO> listarActivos(Pageable pageable) {
         Page<Categoria> categorias = categoriaRepository.findByActivoTrue(pageable);
         List<Long> ids = categorias.stream().map(Categoria::getId).toList();
-        Map<Long, Long> counts = Map.of();
+        Map<Long, Long> counts;
         if (!ids.isEmpty()) {
             List<Object[]> results = productoRepository.countProductosPorCategoriaIds(ids);
             counts = results.stream()
@@ -53,6 +55,8 @@ public class CategoriaServiceImpl implements CategoriaService {
                             arr -> (Long) arr[0],
                             arr -> ((Number) arr[1]).longValue()
                     ));
+        } else {
+            counts = Map.of();
         }
         return categorias.map(c -> toDTO(c, counts.getOrDefault(c.getId(), 0L)));
     }
