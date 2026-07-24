@@ -69,7 +69,7 @@ function CheckoutForm({ pedidoId, token, onSuccess }) {
 
 export default function Checkout() {
   const navigate = useNavigate();
-  const { items, total, clearCart } = useCart();
+  const { items, total, count, clearCart, removeItem, updateCantidad } = useCart();
   const [clientSecret, setClientSecret] = useState(null);
   const [pedidoId, setPedidoId] = useState(null);
   const [token, setToken] = useState(null);
@@ -166,22 +166,53 @@ export default function Checkout() {
 
             <div className="md:col-span-2">
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h2 className="text-lg font-semibold text-gray-800 mb-4">Resumen</h2>
-                <div className="space-y-3 mb-4">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-semibold text-gray-800">Resumen</h2>
+                  <button
+                    onClick={clearCart}
+                    className="text-xs font-medium text-danger hover:text-red-700 transition-colors"
+                  >
+                    Vaciar carrito
+                  </button>
+                </div>
+                <div className="space-y-4 mb-4">
                   {items.map((item) => (
-                    <div key={item.id} className="flex items-center justify-between">
+                    <div key={item.id} className="flex items-start gap-3">
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-gray-800 truncate">{item.nombre}</p>
-                        <p className="text-xs text-gray-500">x{item.cantidad}</p>
+                        <div className="flex items-center gap-1 mt-1.5">
+                          <button
+                            onClick={() => updateCantidad(item.id, item.cantidad - 1)}
+                            className="w-7 h-7 flex items-center justify-center rounded-md border border-gray-300 text-gray-500 hover:bg-gray-100 transition-colors text-sm"
+                          >
+                            −
+                          </button>
+                          <span className="w-8 text-center text-sm font-medium text-gray-800 tabular-nums">{item.cantidad}</span>
+                          <button
+                            onClick={() => updateCantidad(item.id, item.cantidad + 1)}
+                            className="w-7 h-7 flex items-center justify-center rounded-md border border-gray-300 text-gray-500 hover:bg-gray-100 transition-colors text-sm"
+                          >
+                            +
+                          </button>
+                        </div>
                       </div>
-                      <span className="text-sm font-semibold text-gray-800 tabular-nums">
+                      <button
+                        onClick={() => removeItem(item.id)}
+                        className="mt-1 flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-md text-gray-400 hover:text-danger hover:bg-red-50 transition-colors"
+                        title="Eliminar producto"
+                      >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
+                      <span className="flex-shrink-0 text-sm font-semibold text-gray-800 tabular-nums pt-1">
                         ${(item.precio * item.cantidad).toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                       </span>
                     </div>
                   ))}
                 </div>
                 <div className="border-t border-gray-100 pt-3 flex items-center justify-between">
-                  <span className="text-base font-bold text-gray-900">Total</span>
+                  <span className="text-base font-bold text-gray-900">{count} producto(s)</span>
                   <span className="text-xl font-bold text-gray-900 tabular-nums">
                     ${total.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                   </span>
