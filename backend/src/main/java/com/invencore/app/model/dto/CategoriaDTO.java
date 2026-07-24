@@ -20,4 +20,7 @@ public class CategoriaDTO {
 
     @Schema(description = "Indica si la categoría está activa", example = "true")
     private Boolean activo;
+
+    @Schema(description = "Cantidad de productos en esta categoría", example = "12")
+    private Long productCount;
 }

@@ -5,6 +5,7 @@ import com.invencore.app.model.dto.CategoriaDTO;
 import com.invencore.app.model.dto.CategoriaPublicaDTO;
 import com.invencore.app.model.entity.Categoria;
 import com.invencore.app.repository.CategoriaRepository;
+import com.invencore.app.repository.ProductoRepository;
 import com.invencore.app.service.CategoriaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -20,15 +23,38 @@ import org.springframework.transaction.annotation.Transactional;
 public class CategoriaServiceImpl implements CategoriaService {
 
     private final CategoriaRepository categoriaRepository;
+    private final ProductoRepository productoRepository;
 
     @Override
     public Page<CategoriaDTO> listarTodos(Pageable pageable) {
-        return categoriaRepository.findAll(pageable).map(this::toDTO);
+        Page<Categoria> categorias = categoriaRepository.findAll(pageable);
+        List<Long> ids = categorias.stream().map(Categoria::getId).toList();
+        Map<Long, Long> counts = Map.of();
+        if (!ids.isEmpty()) {
+            List<Object[]> results = productoRepository.countProductosPorCategoriaIds(ids);
+            counts = results.stream()
+                    .collect(Collectors.toMap(
+                            arr -> (Long) arr[0],
+                            arr -> ((Number) arr[1]).longValue()
+                    ));
+        }
+        return categorias.map(c -> toDTO(c, counts.getOrDefault(c.getId(), 0L)));
     }
 
     @Override
     public Page<CategoriaDTO> listarActivos(Pageable pageable) {
-        return categoriaRepository.findByActivoTrue(pageable).map(this::toDTO);
+        Page<Categoria> categorias = categoriaRepository.findByActivoTrue(pageable);
+        List<Long> ids = categorias.stream().map(Categoria::getId).toList();
+        Map<Long, Long> counts = Map.of();
+        if (!ids.isEmpty()) {
+            List<Object[]> results = productoRepository.countProductosPorCategoriaIds(ids);
+            counts = results.stream()
+                    .collect(Collectors.toMap(
+                            arr -> (Long) arr[0],
+                            arr -> ((Number) arr[1]).longValue()
+                    ));
+        }
+        return categorias.map(c -> toDTO(c, counts.getOrDefault(c.getId(), 0L)));
     }
 
     @Override
@@ -80,12 +106,17 @@ public class CategoriaServiceImpl implements CategoriaService {
         return dto;
     }
 
-    private CategoriaDTO toDTO(Categoria c) {
+    private CategoriaDTO toDTO(Categoria c, long productCount) {
         CategoriaDTO dto = new CategoriaDTO();
         dto.setId(c.getId());
         dto.setNombre(c.getNombre());
         dto.setDescripcion(c.getDescripcion());
         dto.setActivo(c.getActivo());
+        dto.setProductCount(productCount);
         return dto;
+    }
+
+    private CategoriaDTO toDTO(Categoria c) {
+        return toDTO(c, 0L);
     }
 }

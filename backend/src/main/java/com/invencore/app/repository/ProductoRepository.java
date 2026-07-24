@@ -25,6 +25,8 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     boolean existsByNombre(String nombre);
     Page<Producto> findByActivoTrueAndStockGreaterThan(Integer stock, Pageable pageable);
     Page<Producto> findByActivoTrueAndStockGreaterThanAndCategoriaId(Integer stock, Long categoriaId, Pageable pageable);
+    @Query("SELECT p.categoria.id, COUNT(p) FROM Producto p WHERE p.categoria.id IN :ids GROUP BY p.categoria.id")
+    List<Object[]> countProductosPorCategoriaIds(@Param("ids") List<Long> ids);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT p FROM Producto p WHERE p.id = :id")

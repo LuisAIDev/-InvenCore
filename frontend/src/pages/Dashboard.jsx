@@ -158,16 +158,19 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="card">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Información del Sistema</h3>
-          <div className="space-y-3">
+        <div className="card border-l-4 border-gray-300">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <span className="inline-block w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
+            Información del Sistema
+          </h3>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-3">
             {[
               { label: 'Versión', value: '1.0.0' },
               { label: 'Entorno', value: import.meta.env.VITE_ENV || (import.meta.env.MODE === 'production' ? 'Producción' : 'Desarrollo') },
               { label: 'Base de Datos', value: 'PostgreSQL 17' },
-              { label: 'API Status', value: 'Online' },
+              { label: 'API Status', value: <span className="inline-flex items-center gap-1.5"><span className="w-2 h-2 bg-success rounded-full"></span>Online</span> },
             ].map((info) => (
-              <div key={info.label} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+              <div key={info.label} className="flex items-center justify-between">
                 <span className="text-sm text-gray-500">{info.label}</span>
                 <span className="text-sm font-medium text-gray-800">{info.value}</span>
               </div>
