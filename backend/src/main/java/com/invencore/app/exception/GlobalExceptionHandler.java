@@ -77,7 +77,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PagoException.class)
     public ResponseEntity<ApiErrorResponse> handlePagoError(PagoException ex,
                                                              HttpServletRequest request) {
-        log.error("{} {} — Error de pago: {}", request.getMethod(), request.getRequestURI(), ex.getMessage());
+        log.error("{} {} — Error de pago: {}", request.getMethod(), request.getRequestURI(), ex.getMessage(), ex);
         return build(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
     }
 
@@ -140,10 +140,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(StripeException.class)
     public ResponseEntity<ApiErrorResponse> handleStripe(StripeException ex,
-                                                          HttpServletRequest request) {
-        log.error("{} {} — Stripe error: code={}, msg={}", request.getMethod(), request.getRequestURI(),
-                ex.getCode(), ex.getMessage());
-        return build(HttpStatus.BAD_GATEWAY, "Error en el procesador de pagos: " + ex.getMessage(), request);
+                                                           HttpServletRequest request) {
+        log.error("{} {} — Stripe error: code={}, msg={}, stripeError={}", request.getMethod(), request.getRequestURI(),
+                ex.getCode(), ex.getMessage(),
+                ex.getStripeError() != null ? ex.getStripeError().toJson() : "N/A", ex);
+        return build(HttpStatus.BAD_GATEWAY, "Error en el procesador de pagos", request);
     }
 
     @ExceptionHandler(SQLException.class)

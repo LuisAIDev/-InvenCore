@@ -6,11 +6,15 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StripeServiceImpl implements StripeService {
+
+    private static final Logger log = LoggerFactory.getLogger(StripeServiceImpl.class);
 
     @Value("${stripe.secret-key}")
     private String secretKey;
@@ -32,11 +36,27 @@ public class StripeServiceImpl implements StripeService {
                                 .build()
                 )
                 .build();
-        return PaymentIntent.create(params);
+        try {
+            return PaymentIntent.create(params);
+        } catch (StripeException e) {
+            log.error("Stripe createPaymentIntent failed: amount={} {} description='{}' stripeCode={} stripeMessage={} stripeError={}",
+                    montoCentavos, moneda, descripcion,
+                    e.getCode(), e.getMessage(),
+                    e.getStripeError() != null ? e.getStripeError().toJson() : "N/A");
+            throw e;
+        }
     }
 
     @Override
     public PaymentIntent retrievePaymentIntent(String paymentIntentId) throws StripeException {
-        return PaymentIntent.retrieve(paymentIntentId);
+        try {
+            return PaymentIntent.retrieve(paymentIntentId);
+        } catch (StripeException e) {
+            log.error("Stripe retrievePaymentIntent failed: paymentIntentId={} stripeCode={} stripeMessage={} stripeError={}",
+                    paymentIntentId,
+                    e.getCode(), e.getMessage(),
+                    e.getStripeError() != null ? e.getStripeError().toJson() : "N/A");
+            throw e;
+        }
     }
 }
