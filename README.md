@@ -53,7 +53,7 @@
 
 Puedes acceder directamente al sistema mediante el Login o explorar el Catálogo Público sin necesidad de autenticación. El backend está desplegado en Render y el frontend en Vercel.
 
-> **💡 Las credenciales de acceso (admin/operador) se comparten directamente con reclutadores y evaluadores.** Escríbeme por [LinkedIn](https://www.linkedin.com/in/luisorlandoguerra/) o [GitHub](https://github.com/LuisAIDev) para acceder a la demo en vivo.
+> **💡 Las credenciales de acceso (admin/operador) se comparten directamente con reclutadores y evaluadores.** Escríbeme por [LinkedIn](https://www.linkedin.com/in/luis-orlando-guerra-gonzalez-49aa30244) o [GitHub](https://github.com/LuisAIDev) para acceder a la demo en vivo.
 
 ---
 
@@ -665,8 +665,8 @@ Solo tras pasar **ambos pipelines en verde** se considera un cambio listo para p
           <a href="https://github.com/LuisAIDev">
             <img src="https://img.shields.io/badge/GitHub-LuisAIDev-181717?style=for-the-badge&logo=github" alt="GitHub">
           </a>
-          <a href="https://www.linkedin.com/in/luisorlandoguerra/">
-            <img src="https://img.shields.io/badge/LinkedIn-luisorlandoguerra-0A66C2?style=for-the-badge&logo=linkedin" alt="LinkedIn">
+          <a href="https://www.linkedin.com/in/luis-orlando-guerra-gonzalez-49aa30244">
+            <img src="https://img.shields.io/badge/LinkedIn-luis-orlando-guerra-0A66C2?style=for-the-badge&logo=linkedin" alt="LinkedIn">
           </a>
           <a href="mailto:luis@invencore.com">
             <img src="https://img.shields.io/badge/Email-luis@invencore.com-EA4335?style=for-the-badge&logo=gmail" alt="Email">
