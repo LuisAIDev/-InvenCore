@@ -11,25 +11,14 @@
 
 <br>
 
-## 🚀 Demo en Producción
+## 🚀 Acceso rápido
 
-<p align="center">
-  <a href="https://inven-core-alpha.vercel.app/login" target="_blank">
-    <img src="https://img.shields.io/badge/%F0%9F%8C%90_Frontend-Vercel-000000?style=for-the-badge&logo=vercel" alt="Frontend">
-  </a>
-  <a href="https://inven-core-alpha.vercel.app/catalogo" target="_blank">
-    <img src="https://img.shields.io/badge/%F0%9F%9B%8D%EF%B8%8F_Cat%C3%A1logo-P%C3%BAblico-3B82F6?style=for-the-badge" alt="Catálogo Público">
-  </a>
-  <a href="https://invencore.onrender.com/swagger-ui/index.html" target="_blank">
-    <img src="https://img.shields.io/badge/%F0%9F%93%9A_Swagger-OpenAPI-85EA2D?style=for-the-badge&logo=swagger" alt="Swagger">
-  </a>
-  <a href="https://invencore.onrender.com" target="_blank">
-    <img src="https://img.shields.io/badge/%E2%9A%99%EF%B8%8F_Backend-Render-46E3B7?style=for-the-badge&logo=render" alt="Backend API">
-  </a>
-  <a href="https://github.com/LuisAIDev/-InvenCore" target="_blank">
-    <img src="https://img.shields.io/badge/GitHub-Repositorio-181717?style=for-the-badge&logo=github" alt="Repositorio">
-  </a>
-</p>
+| Recurso | Enlace |
+|---------|-------|
+| 🌐 Frontend (Login) | [https://inven-core-alpha.vercel.app/login](https://inven-core-alpha.vercel.app/login) |
+| 🛍️ Catálogo Público | [https://inven-core-alpha.vercel.app/catalogo](https://inven-core-alpha.vercel.app/catalogo) |
+| ⚙️ Backend API | [https://invencore.onrender.com](https://invencore.onrender.com) |
+| 📂 Repositorio | [https://github.com/LuisAIDev/-InvenCore](https://github.com/LuisAIDev/-InvenCore) |
 
 <p align="center">
   Sistema full-stack de inventario empresarial con arquitectura en capas, autenticación JWT, catálogo público, módulo de ofertas, checkout con pagos reales en modo sandbox (Stripe), y paneles diferenciados por rol.
@@ -59,40 +48,12 @@
 
 ## 🚀 Demo del Proyecto
 
-<div align="center">
-  <table>
-    <tr>
-      <td align="center" width="250">
-        <a href="https://inven-core-alpha.vercel.app" target="_blank">
-          <img src="https://img.shields.io/badge/🌐%20Frontend-Vercel-000000?style=for-the-badge&logo=vercel" alt="Frontend">
-          <br>
-          <strong>inven-core-alpha.vercel.app</strong>
-        </a>
-      </td>
-      <td align="center" width="250">
-        <a href="https://invencore.onrender.com" target="_blank">
-          <img src="https://img.shields.io/badge/⚙%20Backend-Render-46E3B7?style=for-the-badge&logo=render" alt="Backend">
-          <br>
-          <strong>invencore.onrender.com</strong>
-        </a>
-      </td>
-      <td align="center" width="250">
-        <a href="https://invencore.onrender.com/swagger-ui/index.html" target="_blank">
-          <img src="https://img.shields.io/badge/📚%20Swagger%20UI-OpenAPI-85EA2D?style=for-the-badge&logo=swagger" alt="Swagger">
-          <br>
-          <strong>Swagger UI</strong>
-        </a>
-      </td>
-      <td align="center" width="250">
-        <a href="https://github.com/LuisAIDev/-InvenCore" target="_blank">
-          <img src="https://img.shields.io/badge/📦%20Repositorio-GitHub-181717?style=for-the-badge&logo=github" alt="GitHub">
-          <br>
-          <strong>LuisAIDev/InvenCore</strong>
-        </a>
-      </td>
-    </tr>
-  </table>
-</div>
+- **🌐 Frontend (Login):** [https://inven-core-alpha.vercel.app/login](https://inven-core-alpha.vercel.app/login)
+- **🛍️ Catálogo Público:** [https://inven-core-alpha.vercel.app/catalogo](https://inven-core-alpha.vercel.app/catalogo)
+- **⚙️ Backend API:** [https://invencore.onrender.com](https://invencore.onrender.com)
+- **📂 Repositorio:** [https://github.com/LuisAIDev/-InvenCore](https://github.com/LuisAIDev/-InvenCore)
+
+Puedes acceder directamente al sistema mediante el Login o explorar el Catálogo Público sin necesidad de autenticación. El backend está desplegado en Render y el frontend en Vercel.
 
 > **💡 Las credenciales de acceso (admin/operador) se comparten directamente con reclutadores y evaluadores.** Escríbeme por [LinkedIn](https://www.linkedin.com/in/luisorlandoguerra/) o [GitHub](https://github.com/LuisAIDev) para acceder a la demo en vivo.
 
