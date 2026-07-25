@@ -54,14 +54,15 @@ class AuthControllerTest {
         dto.setEmail("admin@invencore.com");
         dto.setPassword("correct-password");
 
-        ResponseEntity<JwtResponseDTO> response = authController.login(dto);
+        ResponseEntity<?> response = authController.login(dto);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().getToken()).isEqualTo("fake-jwt-token");
-        assertThat(response.getBody().getEmail()).isEqualTo("admin@invencore.com");
-        assertThat(response.getBody().getRol()).isEqualTo("ADMIN");
-        assertThat(response.getBody().getTipo()).isEqualTo("Bearer");
+        JwtResponseDTO body = (JwtResponseDTO) response.getBody();
+        assertThat(body.getToken()).isEqualTo("fake-jwt-token");
+        assertThat(body.getEmail()).isEqualTo("admin@invencore.com");
+        assertThat(body.getRol()).isEqualTo("ADMIN");
+        assertThat(body.getTipo()).isEqualTo("Bearer");
     }
 
     @Test
