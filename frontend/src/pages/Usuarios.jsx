@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import API, { authService } from '../services/api';
+import API, { authService, userService } from '../services/api';
 
 export default function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
@@ -8,6 +8,8 @@ export default function Usuarios() {
   const [form, setForm] = useState({ nombre: '', email: '', password: '', rol: 'OPERADOR' });
   const [formError, setFormError] = useState('');
   const [formLoading, setFormLoading] = useState(false);
+
+  const currentEmail = localStorage.getItem('email');
 
   useEffect(() => {
     fetchUsuarios();
@@ -21,6 +23,17 @@ export default function Usuarios() {
       setUsuarios([]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleToggleEstado = async (usuario) => {
+    const accion = usuario.activo !== false ? 'desactivar' : 'activar';
+    if (!confirm(`¿${accion.charAt(0).toUpperCase() + accion.slice(1)} al usuario "${usuario.nombre}"?`)) return;
+    try {
+      await userService.toggleEstado(usuario.id);
+      fetchUsuarios();
+    } catch (err) {
+      alert(err.response?.data?.message || `Error al ${accion} usuario`);
     }
   };
 
@@ -67,6 +80,7 @@ export default function Usuarios() {
               <col />
               <col className="w-[120px]" />
               <col className="w-[110px]" />
+              <col className="w-[100px]" />
             </colgroup>
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200">
@@ -75,13 +89,14 @@ export default function Usuarios() {
                 <th className="px-4 py-3 text-left font-semibold text-gray-600 text-xs uppercase tracking-wider">Email</th>
                 <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">Rol</th>
                 <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">Estado</th>
+                <th className="px-4 py-3 text-center font-semibold text-gray-600 text-xs uppercase tracking-wider">Acciones</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {loading ? (
-                <tr><td colSpan={5} className="px-4 py-12 text-center text-gray-500">Cargando...</td></tr>
+                <tr><td colSpan={6} className="px-4 py-12 text-center text-gray-500">Cargando...</td></tr>
               ) : usuarios.length === 0 ? (
-                <tr><td colSpan={5} className="px-4 py-12 text-center text-gray-500">No hay usuarios registrados.</td></tr>
+                <tr><td colSpan={6} className="px-4 py-12 text-center text-gray-500">No hay usuarios registrados.</td></tr>
               ) : (
                 usuarios.map((u) => (
                   <tr key={u.id} className="hover:bg-gray-50 transition-colors">
@@ -100,6 +115,22 @@ export default function Usuarios() {
                         <span className={`w-1.5 h-1.5 rounded-full ${u.activo !== false ? 'bg-success' : 'bg-danger'}`} />
                         {u.activo !== false ? 'Activo' : 'Inactivo'}
                       </span>
+                    </td>
+                    <td className="px-4 py-3 text-center">
+                      {u.email === currentEmail ? (
+                        <span className="text-xs text-gray-400" title="Tu cuenta">—</span>
+                      ) : (
+                        <button
+                          onClick={() => handleToggleEstado(u)}
+                          className={`text-xs font-medium px-2.5 py-1 rounded-lg transition-colors ${
+                            u.activo !== false
+                              ? 'text-red-700 bg-red-50 hover:bg-red-100'
+                              : 'text-green-700 bg-green-50 hover:bg-green-100'
+                          }`}
+                        >
+                          {u.activo !== false ? 'Desactivar' : 'Activar'}
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))
@@ -133,6 +164,18 @@ export default function Usuarios() {
                     <span className={`w-1.5 h-1.5 rounded-full ${u.activo !== false ? 'bg-success' : 'bg-danger'}`} />
                     {u.activo !== false ? 'Activo' : 'Inactivo'}
                   </span>
+                  {u.email !== currentEmail && (
+                    <button
+                      onClick={() => handleToggleEstado(u)}
+                      className={`text-xs font-medium px-2 py-0.5 rounded-lg transition-colors ${
+                        u.activo !== false
+                          ? 'text-red-700 bg-red-50 hover:bg-red-100'
+                          : 'text-green-700 bg-green-50 hover:bg-green-100'
+                      }`}
+                    >
+                      {u.activo !== false ? 'Desactivar' : 'Activar'}
+                    </button>
+                  )}
                 </div>
               </div>
             ))

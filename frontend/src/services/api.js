@@ -71,4 +71,9 @@ export const ofertaService = {
   eliminar: (id) => api.delete(`/ofertas/${id}`),
 };
 
+export const userService = {
+  listarTodos: () => api.get('/usuarios'),
+  toggleEstado: (id) => api.patch(`/usuarios/${id}/estado`),
+};
+
 export default api;

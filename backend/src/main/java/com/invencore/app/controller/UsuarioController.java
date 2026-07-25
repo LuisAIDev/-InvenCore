@@ -14,7 +14,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -38,6 +41,31 @@ public class UsuarioController {
         Page<UsuarioDTO> dtoPage = usuarioRepository.findAll(pageable)
                 .map(this::toDTO);
         return ResponseEntity.ok(dtoPage);
+    }
+
+    @PatchMapping("/{id}/estado")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Activar/desactivar usuario", description = "Alterna el estado activo de un usuario (solo ADMIN)")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Estado actualizado"),
+        @ApiResponse(responseCode = "400", description = "No se puede desactivar a sí mismo"),
+        @ApiResponse(responseCode = "404", description = "Usuario no encontrado"),
+        @ApiResponse(responseCode = "401", description = "No autenticado"),
+        @ApiResponse(responseCode = "403", description = "Sin permisos de ADMIN")
+    })
+    public ResponseEntity<?> toggleEstado(@PathVariable Long id) {
+        Usuario admin = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (admin.getId().equals(id)) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", "No puedes desactivar tu propia cuenta de administrador"));
+        }
+        return usuarioRepository.findById(id)
+                .map(usuario -> {
+                    usuario.setActivo(!Boolean.TRUE.equals(usuario.getActivo()));
+                    usuarioRepository.save(usuario);
+                    return ResponseEntity.ok((Object) toDTO(usuario));
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     private UsuarioDTO toDTO(Usuario u) {

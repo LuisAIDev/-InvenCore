@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -59,6 +60,10 @@ public class AuthController {
             log.info("Login exitoso: email={}, rol={}", usuario.getEmail(), usuario.getRol());
             return ResponseEntity.ok(new JwtResponseDTO(
                     token, "Bearer", usuario.getEmail(), usuario.getRol().name()));
+        } catch (DisabledException e) {
+            log.warn("Login fallido: cuenta desactivada para email={}", dto.getEmail());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("message", "Cuenta desactivada. Contacta al administrador."));
         } catch (BadCredentialsException e) {
             log.warn("Login fallido: credenciales inválidas para email={}", dto.getEmail());
             throw e;
