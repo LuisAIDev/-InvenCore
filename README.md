@@ -1,9 +1,9 @@
 <p align="center">
-  <img src="./docs/banner.png" alt="InvenCore Banner" width="100%">
+  <img src="./docs/images/banner.svg" alt="InvenCore Banner" width="100%">
 </p>
 
 <p align="center">
-  <img src="./docs/logo.png" alt="InvenCore Logo" width="120">
+  <img src="./docs/images/logo.svg" alt="InvenCore Logo" width="120">
 </p>
 
 <h1 align="center">📦 InvenCore</h1>
@@ -184,9 +184,9 @@ Usuario   ──< Movimiento >── Producto
 | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" width="20"> | React | 18 |
 | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg" width="20"> | Vite | 8.x |
 | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" width="20"> | Tailwind CSS | 3.4 |
-| | lucide-react | Íconos |
-| | Axios | HTTP client |
-| | React Router DOM | 6.x |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" width="20"> | lucide-react | Íconos |
+| <img src="https://cdn.simpleicons.org/axios/5A29E4" width="20"> | Axios | HTTP client |
+| <img src="https://cdn.simpleicons.org/reactrouter/CA4245" width="20"> | React Router DOM | 6.x |
 | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" width="20"> | JavaScript | ES2023 |
 
 ### Backend
@@ -195,9 +195,9 @@ Usuario   ──< Movimiento >── Producto
 |---|---|---|
 | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" width="20"> | Java | 17 LTS |
 | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" width="20"> | Spring Boot | 3.2.5 |
-| | Spring Security + JWT | Autenticación stateless |
-| | Hibernate / JPA | 6.4.4 |
-| | Bucket4j | Rate limiting |
+| <img src="https://cdn.simpleicons.org/springsecurity/6DB33F" width="20"> | Spring Security + JWT | Autenticación stateless |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/hibernate/hibernate-original.svg" width="20"> | Hibernate / JPA | 6.4.4 |
+| <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'/%3E%3C/svg%3E" width="20"> | Bucket4j | Rate limiting |
 
 ### Database
 
@@ -208,9 +208,9 @@ Usuario   ──< Movimiento >── Producto
 
 ### Payments
 
-| Tecnología | Detalle |
-|---|---|
-| Stripe Java SDK | Modo sandbox |
+| Logo | Tecnología | Detalle |
+|---|---|---|
+| <img src="https://cdn.simpleicons.org/stripe/635bff" width="20"> | Stripe Java SDK | Modo sandbox |
 
 ### DevOps
 
@@ -218,14 +218,14 @@ Usuario   ──< Movimiento >── Producto
 |---|---|---|
 | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="20"> | GitHub Actions | CI/CD pipelines |
 | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" width="20"> | Docker | Preparado para contenedores |
-| | Render | Hosting backend (despliegue automático desde main) |
-| | Vercel | Hosting frontend (despliegue automático desde main) |
+| <img src="https://cdn.simpleicons.org/render/46E3B7" width="20"> | Render | Hosting backend (despliegue automático desde main) |
+| <img src="https://cdn.simpleicons.org/vercel" width="20"> | Vercel | Hosting frontend (despliegue automático desde main) |
 
 ### Testing
 
-| Tecnología | Detalle |
-|---|---|
-| JUnit 5 + Mockito + MockMvc + H2 | Suite obligatoria en CI |
+| Logo | Tecnología | Detalle |
+|---|---|---|
+| <img src="https://cdn.simpleicons.org/junit5/25A162" width="20"> | JUnit 5 + Mockito + MockMvc + H2 | Suite obligatoria en CI |
 
 ### Documentation
 
