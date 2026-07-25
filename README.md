@@ -17,7 +17,6 @@
 |---------|-------|
 | 🌐 Frontend (Login) | [https://inven-core-alpha.vercel.app/login](https://inven-core-alpha.vercel.app/login) |
 | 🛍️ Catálogo Público | [https://inven-core-alpha.vercel.app/catalogo](https://inven-core-alpha.vercel.app/catalogo) |
-| ⚙️ Backend API | [https://invencore.onrender.com](https://invencore.onrender.com) |
 | 📂 Repositorio | [https://github.com/LuisAIDev/-InvenCore](https://github.com/LuisAIDev/-InvenCore) |
 
 <p align="center">
@@ -50,7 +49,6 @@
 
 - **🌐 Frontend (Login):** [https://inven-core-alpha.vercel.app/login](https://inven-core-alpha.vercel.app/login)
 - **🛍️ Catálogo Público:** [https://inven-core-alpha.vercel.app/catalogo](https://inven-core-alpha.vercel.app/catalogo)
-- **⚙️ Backend API:** [https://invencore.onrender.com](https://invencore.onrender.com)
 - **📂 Repositorio:** [https://github.com/LuisAIDev/-InvenCore](https://github.com/LuisAIDev/-InvenCore)
 
 Puedes acceder directamente al sistema mediante el Login o explorar el Catálogo Público sin necesidad de autenticación. El backend está desplegado en Render y el frontend en Vercel.
@@ -68,8 +66,7 @@ Puedes acceder directamente al sistema mediante el Login o explorar el Catálogo
 | ✅ Proyecto activo | En desarrollo continuo con mejoras constantes |
 | ✅ CI/CD funcionando | GitHub Actions — Backend (Maven + tests) + Frontend (Vite build) |
 | ✅ Frontend desplegado | [Vercel](https://inven-core-alpha.vercel.app) — Automático desde `main` |
-| ✅ Backend desplegado | [Render](https://invencore.onrender.com) — Automático desde `main` |
-| ✅ API documentada | [Swagger UI](https://invencore.onrender.com/swagger-ui/index.html) — OpenAPI 3.0 |
+| ✅ Backend desplegado | Render — Automático desde `main` |
 | ✅ Integración Stripe | Checkout Session + Webhook (modo sandbox) |
 | ✅ Seguridad JWT | Autenticación stateless con expiración configurable |
 | ✅ Flyway Migrations | Versionado de esquema de base de datos |
@@ -440,8 +437,6 @@ npm run dev
 
 ## 📡 API — Endpoints Principales
 
-La documentación completa e interactiva está disponible en [Swagger UI](https://invencore.onrender.com/swagger-ui/index.html).
-
 ### 🔑 Autenticación
 
 ```http
@@ -620,7 +615,7 @@ Cada push a `main` dispara automáticamente:
 - **Backend CI** — compilación con Maven, suite completa de tests (JUnit + Mockito + MockMvc contra H2)
 - **Frontend CI** — instalación de dependencias y build de producción con Vite
 
-Solo tras pasar **ambos pipelines en verde** se considera un cambio listo para producción. El backend se despliega automáticamente en [Render](https://invencore.onrender.com) y el frontend en [Vercel](https://inven-core-alpha.vercel.app), ambos vía integración directa con GitHub.
+Solo tras pasar **ambos pipelines en verde** se considera un cambio listo para producción. El backend se despliega automáticamente en Render y el frontend en [Vercel](https://inven-core-alpha.vercel.app), ambos vía integración directa con GitHub.
 
 ---
 
