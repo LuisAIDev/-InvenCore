@@ -126,13 +126,6 @@ export default function Login() {
             </button>
           </form>
 
-          <p className="text-center text-sm text-gray-500 mt-6">
-            ¿No tienes cuenta?{' '}
-            <Link to="/register" className="text-blue-600 hover:text-blue-800 font-medium">
-              Crear cuenta
-            </Link>
-          </p>
-
           <p className="text-center mt-6">
             <Link to="/catalogo" className="text-sm text-blue-600 hover:text-blue-800 font-medium">
               Ver catálogo sin iniciar sesión

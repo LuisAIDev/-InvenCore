@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
-import Register from './pages/Register';
+
 import Catalogo from './pages/Catalogo';
 import Checkout from './pages/Checkout';
 import Confirmacion from './pages/Confirmacion';
@@ -38,7 +38,7 @@ function App() {
       <CartProvider>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+
         <Route path="/catalogo" element={<Catalogo />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/confirmacion" element={<Confirmacion />} />

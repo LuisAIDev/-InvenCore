@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react';
-import API from '../services/api';
+import API, { authService } from '../services/api';
 
 export default function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [form, setForm] = useState({ nombre: '', email: '', password: '', rol: 'OPERADOR' });
+  const [formError, setFormError] = useState('');
+  const [formLoading, setFormLoading] = useState(false);
 
   useEffect(() => {
     fetchUsuarios();
@@ -20,6 +24,28 @@ export default function Usuarios() {
     }
   };
 
+  const handleCreate = async (e) => {
+    e.preventDefault();
+    setFormError('');
+    setFormLoading(true);
+    try {
+      await authService.registro(form);
+      setShowModal(false);
+      setForm({ nombre: '', email: '', password: '', rol: 'OPERADOR' });
+      fetchUsuarios();
+    } catch (err) {
+      setFormError(err.response?.data?.message || 'Error al crear usuario');
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
+  const openModal = () => {
+    setForm({ nombre: '', email: '', password: '', rol: 'OPERADOR' });
+    setFormError('');
+    setShowModal(true);
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6 sm:mb-8">
@@ -27,6 +53,9 @@ export default function Usuarios() {
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Usuarios</h1>
           <p className="text-sm text-gray-500 mt-1">Gestión de usuarios del sistema</p>
         </div>
+        <button onClick={openModal} className="btn-primary text-sm">
+          + Crear usuario
+        </button>
       </div>
 
       <div className="card overflow-hidden !p-0">
@@ -110,6 +139,70 @@ export default function Usuarios() {
           )}
         </div>
       </div>
+
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Crear usuario</h2>
+            <form onSubmit={handleCreate} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                <input
+                  type="text"
+                  required
+                  value={form.nombre}
+                  onChange={(e) => setForm({ ...form, nombre: e.target.value })}
+                  className="input-field"
+                  placeholder="Juan Pérez"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input
+                  type="email"
+                  required
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  className="input-field"
+                  placeholder="usuario@invencore.com"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+                <input
+                  type="password"
+                  required
+                  value={form.password}
+                  onChange={(e) => setForm({ ...form, password: e.target.value })}
+                  className="input-field"
+                  placeholder="Mínimo 6 caracteres"
+                  minLength={6}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Rol</label>
+                <select
+                  value={form.rol}
+                  onChange={(e) => setForm({ ...form, rol: e.target.value })}
+                  className="input-field"
+                >
+                  <option value="OPERADOR">OPERADOR</option>
+                  <option value="ADMIN">ADMIN</option>
+                </select>
+              </div>
+              {formError && <p className="text-sm text-danger">{formError}</p>}
+              <div className="flex gap-3 pt-2">
+                <button type="button" onClick={() => setShowModal(false)} className="btn-secondary flex-1">
+                  Cancelar
+                </button>
+                <button type="submit" disabled={formLoading} className="btn-primary flex-1 disabled:opacity-50">
+                  {formLoading ? 'Creando...' : 'Crear usuario'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -23,6 +23,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,7 +66,8 @@ public class AuthController {
     }
 
     @PostMapping("/registro")
-    @Operation(summary = "Registrar usuario", description = "Crea un nuevo usuario ADMIN u OPERADOR")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Crear usuario", description = "Crea un nuevo usuario ADMIN u OPERADOR (solo ADMIN)")
     @ApiResponses({
         @ApiResponse(responseCode = "201", description = "Usuario registrado correctamente"),
         @ApiResponse(responseCode = "400", description = "Datos inválidos o email ya registrado"),
