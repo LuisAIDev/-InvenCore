@@ -15,9 +15,9 @@
 
 | Recurso | Enlace |
 |---------|--------|
-| 🌐 Frontend | [https://invencore.vercel.app](https://invencore.vercel.app) |
+| 🌐 Frontend | [https://inven-core-alpha.vercel.app](https://inven-core-alpha.vercel.app) |
 | ⚙ Backend API | [https://invencore.onrender.com](https://invencore.onrender.com) |
-| 📚 Swagger | [https://invencore-api.onrender.com/swagger-ui/index.html](https://invencore-api.onrender.com/swagger-ui/index.html) |
+| 📚 Swagger | [https://invencore.onrender.com/swagger-ui/index.html](https://invencore.onrender.com/swagger-ui/index.html) |
 | 💻 Repositorio | [https://github.com/LuisAIDev/-InvenCore](https://github.com/LuisAIDev/-InvenCore) |
 
 <p align="center">
@@ -52,10 +52,10 @@
   <table>
     <tr>
       <td align="center" width="250">
-        <a href="https://invencore.vercel.app" target="_blank">
+        <a href="https://inven-core-alpha.vercel.app" target="_blank">
           <img src="https://img.shields.io/badge/🌐%20Frontend-Vercel-000000?style=for-the-badge&logo=vercel" alt="Frontend">
           <br>
-          <strong>invencore.vercel.app</strong>
+          <strong>inven-core-alpha.vercel.app</strong>
         </a>
       </td>
       <td align="center" width="250">
@@ -66,7 +66,7 @@
         </a>
       </td>
       <td align="center" width="250">
-        <a href="https://invencore-api.onrender.com/swagger-ui/index.html" target="_blank">
+        <a href="https://invencore.onrender.com/swagger-ui/index.html" target="_blank">
           <img src="https://img.shields.io/badge/📚%20Swagger%20UI-OpenAPI-85EA2D?style=for-the-badge&logo=swagger" alt="Swagger">
           <br>
           <strong>Swagger UI</strong>
@@ -95,9 +95,9 @@
 |---|---|
 | ✅ Proyecto activo | En desarrollo continuo con mejoras constantes |
 | ✅ CI/CD funcionando | GitHub Actions — Backend (Maven + tests) + Frontend (Vite build) |
-| ✅ Frontend desplegado | [Vercel](https://invencore.vercel.app) — Automático desde `main` |
+| ✅ Frontend desplegado | [Vercel](https://inven-core-alpha.vercel.app) — Automático desde `main` |
 | ✅ Backend desplegado | [Render](https://invencore.onrender.com) — Automático desde `main` |
-| ✅ API documentada | [Swagger UI](https://invencore-api.onrender.com/swagger-ui/index.html) — OpenAPI 3.0 |
+| ✅ API documentada | [Swagger UI](https://invencore.onrender.com/swagger-ui/index.html) — OpenAPI 3.0 |
 | ✅ Integración Stripe | Checkout Session + Webhook (modo sandbox) |
 | ✅ Seguridad JWT | Autenticación stateless con expiración configurable |
 | ✅ Flyway Migrations | Versionado de esquema de base de datos |
@@ -468,7 +468,7 @@ npm run dev
 
 ## 📡 API — Endpoints Principales
 
-La documentación completa e interactiva está disponible en [Swagger UI](https://invencore-api.onrender.com/swagger-ui/index.html).
+La documentación completa e interactiva está disponible en [Swagger UI](https://invencore.onrender.com/swagger-ui/index.html).
 
 ### 🔑 Autenticación
 
@@ -558,8 +558,8 @@ Content-Type: application/json
   "items": [
     { "productoId": 1, "cantidad": 2 }
   ],
-  "successUrl": "https://invencore.vercel.app/confirmacion?session_id={CHECKOUT_SESSION_ID}",
-  "cancelUrl": "https://invencore.vercel.app/catalogo"
+  "successUrl": "https://inven-core-alpha.vercel.app/confirmacion?session_id={CHECKOUT_SESSION_ID}",
+  "cancelUrl": "https://inven-core-alpha.vercel.app/catalogo"
 }
 ```
 
@@ -648,7 +648,7 @@ Cada push a `main` dispara automáticamente:
 - **Backend CI** — compilación con Maven, suite completa de tests (JUnit + Mockito + MockMvc contra H2)
 - **Frontend CI** — instalación de dependencias y build de producción con Vite
 
-Solo tras pasar **ambos pipelines en verde** se considera un cambio listo para producción. El backend se despliega automáticamente en [Render](https://invencore.onrender.com) y el frontend en [Vercel](https://invencore.vercel.app), ambos vía integración directa con GitHub.
+Solo tras pasar **ambos pipelines en verde** se considera un cambio listo para producción. El backend se despliega automáticamente en [Render](https://invencore.onrender.com) y el frontend en [Vercel](https://inven-core-alpha.vercel.app), ambos vía integración directa con GitHub.
 
 ---
 
