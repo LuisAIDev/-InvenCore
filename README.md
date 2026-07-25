@@ -9,6 +9,17 @@
 <h1 align="center">📦 InvenCore</h1>
 <h3 align="center">Sistema de Gestión de Inventario Empresarial</h3>
 
+<br>
+
+## 🚀 Acceso rápido
+
+| Recurso | Enlace |
+|---------|--------|
+| 🌐 Frontend | [https://invencore.vercel.app](https://invencore.vercel.app) |
+| ⚙ Backend API | [https://invencore.onrender.com](https://invencore.onrender.com) |
+| 📚 Swagger | [https://invencore-api.onrender.com/swagger-ui/index.html](https://invencore-api.onrender.com/swagger-ui/index.html) |
+| 💻 Repositorio | [https://github.com/LuisAIDev/-InvenCore](https://github.com/LuisAIDev/-InvenCore) |
+
 <p align="center">
   Sistema full-stack de inventario empresarial con arquitectura en capas, autenticación JWT, catálogo público, módulo de ofertas, checkout con pagos reales en modo sandbox (Stripe), y paneles diferenciados por rol.
 </p>
