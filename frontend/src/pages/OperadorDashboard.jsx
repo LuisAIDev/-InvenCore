@@ -1,12 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { productoService, movimientoService } from '../services/api';
+import ProductThumb from '../components/common/ProductThumb';
 
 const formatCOP = (amount) =>
   new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(amount);
 
-const MetricCard = ({ title, value, icon, bgGradient, iconBg, pulse }) => (
-  <div className={`relative overflow-hidden rounded-2xl p-6 ${bgGradient} shadow-lg transition-transform duration-300 hover:scale-[1.02]`}>
+const MetricCard = ({ title, value, icon, bgGradient, iconBg, pulse, onClick }) => {
+  const Wrapper = onClick ? 'button' : 'div';
+  return (
+    <Wrapper
+      onClick={onClick}
+      className={`relative overflow-hidden rounded-2xl p-6 ${bgGradient} shadow-lg transition-transform duration-300 ${onClick ? 'cursor-pointer hover:scale-[1.02]' : ''}`}
+    >
     <div className="flex items-start justify-between">
       <div className="z-10">
         <p className="text-sm font-medium text-white/70">{title}</p>
@@ -22,8 +28,9 @@ const MetricCard = ({ title, value, icon, bgGradient, iconBg, pulse }) => (
     </div>
     <div className="absolute -bottom-4 -right-4 w-24 h-24 rounded-full bg-white/5" />
     <div className="absolute -top-4 -left-4 w-16 h-16 rounded-full bg-white/5" />
-  </div>
+  </Wrapper>
 );
+};
 
 export default function OperadorDashboard() {
   const navigate = useNavigate();
@@ -114,6 +121,7 @@ export default function OperadorDashboard() {
             icon="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
             bgGradient="bg-gradient-to-br from-emerald-600 to-emerald-800"
             iconBg="bg-emerald-400/30"
+            onClick={() => navigate('/operador/movimientos-hoy')}
           />
           <MetricCard
             title="Último Movimiento"
@@ -132,12 +140,14 @@ export default function OperadorDashboard() {
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="rounded-2xl p-5 animate-pulse" style={{ backgroundColor: '#1e293b' }}>
-                  <div className="h-5 bg-gray-600 rounded w-3/4 mb-3" />
-                  <div className="h-4 bg-gray-600 rounded w-1/2 mb-3" />
-                  <div className="h-6 bg-gray-600 rounded w-1/3 mb-3" />
-                  <div className="h-2 bg-gray-600 rounded w-full mb-2" />
-                  <div className="h-6 bg-gray-600 rounded w-1/4" />
+                <div key={i} className="rounded-2xl overflow-hidden animate-pulse" style={{ backgroundColor: '#1e293b' }}>
+                  <div className="h-36" style={{ backgroundColor: '#0f172a' }} />
+                  <div className="p-4">
+                    <div className="h-5 bg-gray-600 rounded w-3/4 mb-3" />
+                    <div className="h-6 bg-gray-600 rounded w-1/3 mb-3" />
+                    <div className="h-2 bg-gray-600 rounded w-full mb-2" />
+                    <div className="h-6 bg-gray-600 rounded w-1/4" />
+                  </div>
                 </div>
               ))}
             </div>
@@ -156,45 +166,57 @@ export default function OperadorDashboard() {
                 return (
                   <div
                     key={prod.id}
-                    className="rounded-2xl p-5 transition-all duration-300 hover:shadow-xl hover:shadow-blue-900/30 hover:-translate-y-1 border border-white/5"
+                    className="rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-blue-900/30 hover:-translate-y-1 border border-white/5"
                     style={{ backgroundColor: '#1e293b' }}
                   >
-                    <div className="flex items-start justify-between mb-3">
-                      <h3 className="font-semibold text-white text-sm leading-tight flex-1 mr-2">
-                        {prod.nombre}
-                      </h3>
-                      {isLow ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-red-500/20 text-red-400 animate-pulse border border-red-500/30 shrink-0">
-                          <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
-                          Stock Bajo
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shrink-0">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                          Disponible
+                    {/* Product Image */}
+                    <div className="relative h-36 overflow-hidden" style={{ backgroundColor: '#0f172a' }}>
+                      <ProductThumb
+                        url={prod.imagenUrl}
+                        className="w-full h-full rounded-none"
+                      />
+                      {prod.categoria && (
+                        <span className="absolute top-2 left-2 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-900/70 text-purple-300 border border-purple-500/30 backdrop-blur-sm shadow-lg">
+                          {prod.categoria.nombre}
                         </span>
                       )}
                     </div>
-                    {prod.categoria && (
-                      <p className="text-xs text-gray-400 mb-3">{prod.categoria.nombre}</p>
-                    )}
-                    <p className="text-lg font-bold text-white mb-4">
-                      {formatCOP(prod.precio)}
-                    </p>
-                    <div className="mb-1">
-                      <div className="flex justify-between text-xs mb-1">
-                        <span className="text-gray-400">Stock</span>
-                        <span className={isLow ? 'text-red-400 font-medium' : 'text-gray-300'}>
-                          {prod.stock} / {prod.stockMinimo}
-                        </span>
+
+                    <div className="p-4">
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className="font-semibold text-white text-sm leading-tight flex-1 mr-2">
+                          {prod.nombre}
+                        </h3>
+                        {isLow ? (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-red-500/20 text-red-400 animate-pulse border border-red-500/30 shrink-0">
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
+                            Bajo
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shrink-0">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                            OK
+                          </span>
+                        )}
                       </div>
-                      <div className="w-full h-2 rounded-full overflow-hidden" style={{ backgroundColor: '#0f172a' }}>
-                        <div
-                          className={`h-full rounded-full transition-all duration-500 ${
-                            isLow ? 'bg-gradient-to-r from-red-500 to-orange-500' : 'bg-gradient-to-r from-blue-500 to-purple-500'
-                          }`}
-                          style={{ width: `${pct}%` }}
-                        />
+                      <p className="text-lg font-bold text-white mb-3">
+                        {formatCOP(prod.precio)}
+                      </p>
+                      <div>
+                        <div className="flex justify-between text-xs mb-1">
+                          <span className="text-gray-400">Stock</span>
+                          <span className={isLow ? 'text-red-400 font-medium' : 'text-gray-300'}>
+                            {prod.stock} / {prod.stockMinimo}
+                          </span>
+                        </div>
+                        <div className="w-full h-2 rounded-full overflow-hidden" style={{ backgroundColor: '#0f172a' }}>
+                          <div
+                            className={`h-full rounded-full transition-all duration-500 ${
+                              isLow ? 'bg-gradient-to-r from-red-500 to-orange-500' : 'bg-gradient-to-r from-blue-500 to-purple-500'
+                            }`}
+                            style={{ width: `${pct}%` }}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>

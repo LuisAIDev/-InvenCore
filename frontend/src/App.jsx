@@ -14,6 +14,7 @@ import AdminPedidos from './pages/AdminPedidos';
 import Layout from './components/layout/Layout';
 import OperadorDashboard from './pages/OperadorDashboard';
 import RegistrarMovimiento from './pages/RegistrarMovimiento';
+import HistorialMovimientos from './pages/HistorialMovimientos';
 import { CartProvider } from './context/CartContext';
 
 const PrivateRoute = ({ children, roles }) => {
@@ -56,6 +57,11 @@ function App() {
         <Route path="/operador/movimiento" element={
           <PrivateRoute roles={['OPERADOR', 'ADMIN']}>
             <RegistrarMovimiento />
+          </PrivateRoute>
+        } />
+        <Route path="/operador/movimientos-hoy" element={
+          <PrivateRoute roles={['OPERADOR', 'ADMIN']}>
+            <HistorialMovimientos />
           </PrivateRoute>
         } />
         <Route path="/pedidos" element={<ProtectedPage Page={AdminPedidos} roles={['ADMIN']} />} />

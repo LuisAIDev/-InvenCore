@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { productoService, movimientoService } from '../services/api';
+import ProductThumb from '../components/common/ProductThumb';
 
 export default function RegistrarMovimiento() {
   const navigate = useNavigate();
@@ -40,6 +41,8 @@ export default function RegistrarMovimiento() {
     setCantidad((c) => Math.max(1, c + delta));
   };
 
+  const stockOverflow = selectedProduct && tipo === 'SALIDA' && cantidad > selectedProduct.stock;
+
   const newStock = selectedProduct
     ? tipo === 'ENTRADA'
       ? selectedProduct.stock + cantidad
@@ -53,8 +56,9 @@ export default function RegistrarMovimiento() {
     if (!selectedProduct) { setError('Selecciona un producto'); return; }
     if (!tipo) { setError('Selecciona ENTRADA o SALIDA'); return; }
     if (tipo === 'SALIDA' && cantidad > selectedProduct.stock) {
-      setError('No hay suficiente stock para esta salida');
-      return;
+      if (!window.confirm('⚠️ El movimiento supera el stock actual. ¿Continuar de todas formas?')) {
+        return;
+      }
     }
     setSubmitting(true);
     setError('');
@@ -137,9 +141,28 @@ export default function RegistrarMovimiento() {
                 className="w-full pl-12 pr-4 py-3 rounded-xl text-white placeholder-gray-500 border focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                 style={{ backgroundColor: '#0f172a', borderColor: '#334155' }}
               />
+              {!searchTerm && !selectedProduct && (
+                <div className="mt-2">
+                  <p className="text-xs text-gray-500 mb-2">Productos disponibles</p>
+                  <div className="flex flex-wrap gap-2">
+                    {productos.slice(0, 8).map((p) => (
+                      <button
+                        key={p.id}
+                        type="button"
+                        onClick={() => handleSelectProduct(p)}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs text-gray-300 hover:text-white border border-white/10 hover:border-blue-500/40 hover:bg-blue-600/15 transition-all"
+                        style={{ backgroundColor: '#0f172a' }}
+                      >
+                        <ProductThumb url={p.imagenUrl} className="w-5 h-5 rounded" />
+                        <span>{p.nombre}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
               {searchTerm && !selectedProduct && (
                 <div
-                  className="absolute top-full left-0 right-0 mt-1 rounded-xl border z-20 max-h-48 overflow-y-auto shadow-2xl"
+                  className="absolute top-full left-0 right-0 mt-1 rounded-xl border z-20 max-h-60 overflow-y-auto shadow-2xl"
                   style={{ backgroundColor: '#0f172a', borderColor: '#334155' }}
                 >
                   {filtered.length === 0 ? (
@@ -150,10 +173,16 @@ export default function RegistrarMovimiento() {
                         key={p.id}
                         type="button"
                         onClick={() => handleSelectProduct(p)}
-                        className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-blue-600/20 hover:text-white transition-colors border-b border-white/5 last:border-0"
+                        className="flex items-center gap-3 w-full text-left px-4 py-3 text-sm text-gray-300 hover:bg-blue-600/20 hover:text-white transition-colors border-b border-white/5 last:border-0"
                       >
-                        <span className="font-medium">{p.nombre}</span>
-                        <span className="text-gray-500 ml-2">Stock: {p.stock}</span>
+                        <ProductThumb url={p.imagenUrl} className="w-8 h-8 rounded-lg" />
+                        <div className="flex-1 min-w-0">
+                          <span className="font-medium block truncate">{p.nombre}</span>
+                          <span className="text-gray-500 text-xs">Stock: {p.stock}</span>
+                        </div>
+                        {p.categoria && (
+                          <span className="text-xs text-purple-400 shrink-0">{p.categoria.nombre}</span>
+                        )}
                       </button>
                     ))
                   )}
@@ -161,15 +190,21 @@ export default function RegistrarMovimiento() {
               )}
             </div>
             {selectedProduct && (
-              <div className="mt-3 flex items-center gap-3 text-sm" style={{ color: '#94a3b8' }}>
-                <span className="px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                  Stock actual: {selectedProduct.stock}
-                </span>
-                {selectedProduct.categoria && (
-                  <span className="px-2.5 py-1 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/20">
-                    {selectedProduct.categoria.nombre}
-                  </span>
-                )}
+              <div className="mt-4 flex items-center gap-4 p-4 rounded-xl border border-white/10" style={{ backgroundColor: '#0f172a' }}>
+                <ProductThumb url={selectedProduct.imagenUrl} className="w-14 h-14 rounded-xl" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-white truncate">{selectedProduct.nombre}</p>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="px-2.5 py-0.5 rounded-lg text-xs font-medium bg-blue-500/15 text-blue-400 border border-blue-500/20">
+                      Stock actual: <strong>{selectedProduct.stock}</strong>
+                    </span>
+                    {selectedProduct.categoria && (
+                      <span className="px-2.5 py-0.5 rounded-lg text-xs bg-purple-500/15 text-purple-400 border border-purple-500/20">
+                        {selectedProduct.categoria.nombre}
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
           </div>
@@ -267,11 +302,25 @@ export default function RegistrarMovimiento() {
                 </svg>
                 <div className="text-center">
                   <p className="text-xs text-gray-500 mb-1">Nuevo</p>
-                  <p className={`text-2xl font-bold ${newStock > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                    {newStock}
+                  <p className={`text-2xl font-bold ${newStock < 0 ? 'text-red-400' : newStock === 0 ? 'text-orange-400' : 'text-emerald-400'}`}>
+                    {newStock < 0 ? `-${Math.abs(newStock)}` : newStock}
                   </p>
                 </div>
               </div>
+              {stockOverflow && (
+                <div className="mt-3 flex items-start gap-3 p-3 rounded-lg bg-red-500/10 border border-red-500/30">
+                  <svg className="w-5 h-5 text-red-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <div>
+                    <p className="text-sm font-semibold text-red-400">Stock insuficiente</p>
+                    <p className="text-xs text-red-300/80 mt-0.5">
+                      La salida de <strong>{cantidad}</strong> supera las <strong>{selectedProduct.stock}</strong> unidades disponibles.
+                      {newStock < 0 && ' El stock quedará en negativo.'}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
