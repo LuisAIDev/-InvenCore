@@ -51,7 +51,7 @@ public class AuthController {
         @ApiResponse(responseCode = "400", description = "Credenciales inválidas"),
         @ApiResponse(responseCode = "401", description = "No autorizado")
     })
-    public ResponseEntity<JwtResponseDTO> login(@Valid @RequestBody AuthDTO dto) {
+    public ResponseEntity<?> login(@Valid @RequestBody AuthDTO dto) {
         try {
             Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
